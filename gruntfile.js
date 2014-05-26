@@ -4,75 +4,50 @@ module.exports = function(grunt){
     meta: {
       version: "<%= pkg.version %>",
       banner:
-        "// backbone.fwd\n" + 
-        "// ------------\n" + 
-        "// Forward events from a source, through a target object\n" + 
+        "// mustbe\n" + 
+        "// ------\n" + 
+        "// An authorization framework for NodeJS apps" + 
         "// \n" + 
         "// v<%= pkg.version %>\n" +
         "// Copyright (C)<%= grunt.template.today('yyyy') %> Muted Solutions, LLC.\n" + 
         "// Distributed under MIT license\n" + 
         "// \n" +
-        "// https://github.com/derickbailey/backbone.fwd\n" +
+        "// https://github.com/derickbailey/mustbe\n" +
         "\n"
     },
 
     assets: {
-      underscore: "node_modules/underscore/underscore.js",
-      backbone: "node_modules/backbone/backbone.js"
     },
 
     jshint: {
       options: {
-        jshintrc: '.jshintrc'
+        jshintrc: ".jshintrc"
       },
-      build: [ 'src/*.js' ]
+      build: [ "mustbe/*.js" ]
     },
 
-    concat: {
+    jasmine_node: {
       options: {
-        banner: "<%= meta.banner %>"
-      },
-      dist: {
-        src: ["src/backbone.fwd.js"],
-        dest: "dist/backbone.fwd.js",
-      },
-    },
-
-    uglify: {
-      options: {
-        banner: "<%= meta.banner %>"
-      },
-      dist: {
-        files: {
-          "dist/backbone.fwd.min.js": ["<%= concat.dist.dest %>"]
+        forceExit: true,
+        match: ".",
+        matchall: false,
+        extensions: "js",
+        specNameMatcher: "Specs",
+        jUnit: {
+          report: true,
+          savePath : "./build/reports/jasmine/",
+          useDotNotation: true,
+          consolidate: true
         }
-      }
-    },
-
-    jasmine : {
-      options : {
-        helpers : [
-          "specs/helpers/**/*.js"
-        ],
-        specs: "specs/*Specs.js",
-        vendor : [
-          "<%= assets.underscore %>",
-          "<%= assets.backbone %>"
-        ],
-        keepRunner: true
       },
-      all: {
-        src: ["src/backbone.fwd.js"]
-      }
+      all: ["specs/"]
     }
 
   });
 
-  grunt.loadNpmTasks("grunt-contrib-jasmine");
-  grunt.loadNpmTasks("grunt-contrib-concat");
-  grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks("grunt-jasmine-node");
   grunt.loadNpmTasks("grunt-contrib-jshint");
 
-  grunt.registerTask("specs", ["jshint", "jasmine:all"]);
+  grunt.registerTask("specs", ["jshint", "jasmine_node:all"]);
   grunt.registerTask("default", ["jshint", "specs", "concat", "uglify"]);
 };

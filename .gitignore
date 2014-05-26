@@ -1,8 +1,5 @@
 .DS_Store
-/deploy
-database/db_backups/development
-database/db_backups/staging
-database/db_backups/production
+/build
 node_modules
 *.swp
 *.swo
