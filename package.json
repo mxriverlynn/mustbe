@@ -1,0 +1,16 @@
+{
+  "name": "mustbe",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "start": "nodemon --exec grunt specs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jasmine": "^0.6.4",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-jshint": "^0.10.0"
+  }
+}
