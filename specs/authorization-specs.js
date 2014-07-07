@@ -58,7 +58,7 @@ describe("authorization with params", function(){
           });
         });
 
-        config.parameterMap(function(params){
+        config.parameterMaps(function(params){
 
           params.map("do thing", function(req){
             return {

@@ -87,12 +87,12 @@ mustBe.configure(function(config){
     });
   }
 
-  // route -> activity map
-  // ---------------------
+  // parameter map -> activity params
+  // ---------------------------------
 
-  config.routes(function(routes){
+  config.parameterMaps(function(params){
 
-    routes.map({
+    params.map({
       // the activity to authorize
       activity: "view thing",
 
@@ -106,7 +106,7 @@ mustBe.configure(function(config){
       }
     });
 
-    routes.map({
+    params.map({
       activity: "edit thing",
       getParams: function(req){
         return {

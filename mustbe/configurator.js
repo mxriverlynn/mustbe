@@ -36,7 +36,7 @@ Configurator.prototype.activities = function(cb){
   this.config.allower = activities.allower;
 };
 
-Configurator.prototype.parameterMap = function(cb){
+Configurator.prototype.parameterMaps = function(cb){
   var parameterMap = new ParameterMap();
   cb(parameterMap);
   this.config.parameterMaps = parameterMap.getMaps();
