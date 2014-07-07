@@ -6,7 +6,7 @@ var user = {};
 var helpers = {
   user: user,
 
-  setup: function(mustBe, cb){
+  setupRoute: function(route, mustBe, cb){
     var app = new express();
     mustBe.use(app);
 
@@ -15,12 +15,17 @@ var helpers = {
       res.send({});
     };
     var authorizationCheck = cb(handler);
-    router.get("/", authorizationCheck);
+    router.get(route, authorizationCheck);
     app.use("/", router);
 
-    return function(cb){
+    return function(route, cb){
+      if (!cb){ 
+        cb = route; 
+        route = "/";
+      }
+
       supertest(app)
-        .get("/")
+        .get(route)
         .end(function(err, res){
           if (err) { throw err; }
           cb(res);

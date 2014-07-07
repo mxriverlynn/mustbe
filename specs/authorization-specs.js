@@ -2,11 +2,12 @@ var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../mustbe/core");
 var helpers = require("./helpers");
 
-describe("authorization", function(){
-  describe("when user is authorized", function(){
+describe("authorization with params", function(){
+
+  describe("when doing authorization check", function(){
     var async = new AsyncSpec(this);
 
-    var response;
+    var response, user;
 
     async.beforeEach(function(done){
       var mustBe = new MustBe();
@@ -16,7 +17,10 @@ describe("authorization", function(){
         config.isAuthenticated(helpers.isAuthenticated);
 
         config.activities(function(activities){
-          activities.can("do thing", helpers.authorizedValidation);
+          activities.can("do thing", function(u, params, cb){
+            user = u;
+            cb(null, true);
+          });
         });
       });
 
@@ -30,16 +34,15 @@ describe("authorization", function(){
       });
     });
 
-    it("should allow request", function(){
-      helpers.expectResponseCode(response, 200);
+    it("should pass the user to the validator", function(){
+      expect(user).toBe(helpers.user);
     });
-
   });
 
-  describe("when user is not authorized", function(){
+  describe("when an authorized route has params that are mapped", function(){
     var async = new AsyncSpec(this);
 
-    var response;
+    var params, response, req;
 
     async.beforeEach(function(done){
       var mustBe = new MustBe();
@@ -47,27 +50,38 @@ describe("authorization", function(){
       mustBe.configure(function(config){
         config.getUser(helpers.getValidUser);
         config.isAuthenticated(helpers.isAuthenticated);
-        config.notAuthorized(helpers.notAuthorized);
 
         config.activities(function(activities){
-          activities.can("do thing", helpers.unauthorizedValidation);
+          activities.can("do thing", function(user, p, cb){
+            params = p;
+            cb(null, true);
+          });
+        });
+
+        config.parameterMap(function(params){
+
+          params.map("do thing", function(req){
+            return {
+              foo: req.params["foo"]
+            }
+          });
+
         });
       });
 
-      var request = helpers.setupRoute("/", mustBe, function(handler){
+      var request = helpers.setupRoute("/:foo", mustBe, function(handler){
         return mustBe.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request("/bar", function(res){
         response = res;
         done();
       });
     });
 
-    it("should not allow request", function(){
-      helpers.expectResponseCode(response, 403);
+    it("should pass the params to the authorization check", function(){
+      expect(params.foo).toBe("bar");
     });
-
   });
 
 });

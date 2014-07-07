@@ -47,8 +47,15 @@ MustBe.prototype.authorized = function(activity, cb){
     mustBe.config.getUser(req, function(err, user){
       if (err) { throw err; }
 
+
+      var params;
+      var parameterMap = mustBe.config.parameterMaps[activity];
+      if (parameterMap){
+        params = parameterMap(req);
+      }
+
       var validator = mustBe.config.validators[activity];
-      validator(user, {}, function(err, isAuthorized){
+      validator(user, params, function(err, isAuthorized){
         if (err) { throw err; }
 
         if (isAuthorized){

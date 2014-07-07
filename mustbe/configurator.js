@@ -1,7 +1,11 @@
 var Activities = require("./activities");
+var ParameterMap = require("./parameter-map");
 
 function Configurator(){
-  this.config = {};
+  this.config = {
+    validators: {},
+    parameterMaps: {}
+  };
 }
 
 Configurator.prototype.getConfig = function(){
@@ -28,6 +32,12 @@ Configurator.prototype.activities = function(cb){
   var activities = new Activities();
   cb(activities);
   this.config.validators = activities.getValidators();
+};
+
+Configurator.prototype.parameterMap = function(cb){
+  var parameterMap = new ParameterMap();
+  cb(parameterMap);
+  this.config.parameterMaps = parameterMap.getMaps();
 };
 
 module.exports = Configurator;
