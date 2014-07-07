@@ -11,10 +11,13 @@
   "eqnull": true,
   "browser": true,
   "globals": {
-    "jQuery": true,
-    "Backbone": true,
-    "_": true,
-    "$": true
+    "console": true,
+    "require": true,
+    "module": true,
+    "jasmine": true,
+    "describe": true,
+    "it": true,
+    "expect": true
   }
 }
 

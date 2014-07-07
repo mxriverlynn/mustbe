@@ -16,14 +16,11 @@ module.exports = function(grunt){
         "\n"
     },
 
-    assets: {
-    },
-
     jshint: {
       options: {
         jshintrc: ".jshintrc"
       },
-      build: [ "mustbe/*.js" ]
+      build: [ "mustbe/**/*.js" ]
     },
 
     jasmine_node: {
@@ -32,7 +29,7 @@ module.exports = function(grunt){
         match: ".",
         matchall: false,
         extensions: "js",
-        specNameMatcher: "Specs",
+        specNameMatcher: "[Ss][Pp][Ee][Cc][Ss]",
         jUnit: {
           report: true,
           savePath : "./build/reports/jasmine/",
@@ -41,13 +38,20 @@ module.exports = function(grunt){
         }
       },
       all: ["specs/"]
-    }
+    },
 
+    watch: {
+      specs: {
+        files: ["mustbe/**/*.js", "specs/**/*.js"],
+        tasks: ["specs"]
+      }
+    }
   });
 
   grunt.loadNpmTasks("grunt-jasmine-node");
   grunt.loadNpmTasks("grunt-contrib-jshint");
+  grunt.loadNpmTasks("grunt-contrib-watch");
 
   grunt.registerTask("specs", ["jshint", "jasmine_node:all"]);
-  grunt.registerTask("default", ["jshint", "specs", "concat", "uglify"]);
+  grunt.registerTask("default", ["specs", "watch"]);
 };

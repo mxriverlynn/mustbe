@@ -1,5 +1,6 @@
 {
   "name": "mustbe",
+  "private": false,
   "version": "0.1.0",
   "description": "An authorization framework for NodeJS apps",
   "keywords": [
@@ -27,15 +28,18 @@
   "directories": {
     "lib": "mustbe"
   },
-  "main": "index.js",
-  "private": false,
+  "main": "mustbe/index.js",
   "scripts": {
-    "start": "nodemon --exec grunt specs"
+    "start": "grunt"
   },
   "dependencies": {},
   "devDependencies": {
+    "express": "^4.5.1",
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
-    "grunt-jasmine-node": "^0.2.1"
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-jasmine-node": "^0.2.1",
+    "jasmine-async": "0.0.1",
+    "supertest": "^0.13.0"
   }
 }
