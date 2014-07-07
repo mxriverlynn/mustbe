@@ -6,7 +6,7 @@ describe("authorization", function(){
   describe("when doing authorization check", function(){
     var async = new AsyncSpec(this);
 
-    var response;
+    var response, user;
 
     async.beforeEach(function(done){
       var mustBe = new MustBe();
@@ -16,7 +16,10 @@ describe("authorization", function(){
         config.isAuthenticated(helpers.isAuthenticated);
 
         config.activities(function(activities){
-          activities.can("do thing", helpers.authorizedValidation);
+          activities.can("do thing", function(u, params, cb){
+            user = u;
+            cb(null, true);
+          });
         });
       });
 
@@ -31,6 +34,7 @@ describe("authorization", function(){
     });
 
     it("should pass the user to the validator", function(){
+      expect(user).toBe(helpers.user);
     });
   });
 
