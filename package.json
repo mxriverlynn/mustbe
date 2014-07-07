@@ -32,7 +32,9 @@
   "scripts": {
     "start": "grunt"
   },
-  "dependencies": {},
+  "dependencies": {
+    "rsvp": "^3.0.9"
+  },
   "devDependencies": {
     "express": "^4.5.1",
     "grunt": "^0.4.5",

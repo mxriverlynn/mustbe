@@ -1,4 +1,5 @@
 var Configurator = require("./configurator");
+var RSVP = require("rsvp");
 
 function MustBe(){
 }
@@ -41,12 +42,12 @@ MustBe.prototype.authenticated = function(cb){
 MustBe.prototype.authorized = function(activity, cb){
   var mustBe = this;
 
-  function handler(req, res){
+  return function(req, res){
+    var routeHandler = this;
     var args = Array.prototype.slice.apply(arguments);
 
     mustBe.config.getUser(req, function(err, user){
       if (err) { throw err; }
-
 
       var params;
       var parameterMap = mustBe.config.parameterMaps[activity];
@@ -54,21 +55,61 @@ MustBe.prototype.authorized = function(activity, cb){
         params = parameterMap(req);
       }
 
-      var validator = mustBe.config.validators[activity];
-      validator(user, params, function(err, isAuthorized){
-        if (err) { throw err; }
-
-        if (isAuthorized){
-          cb.apply(this, args);
-        } else {
-          mustBe.config.notAuthorized(req, res);
+      var denierPromise = new RSVP.Promise(function(resolve, reject){
+        var denier = mustBe.config.denier;
+        if (!denier){ 
+          return resolve(false); 
         }
 
+        denier(user, activity, function(err, isDenied){
+          if (err) { reject(err); }
+          resolve(isDenied);
+        });
       });
-    });
-  }
 
-  return handler;
+      var allowerPromise = new RSVP.Promise(function(resolve, reject){
+        var allower = mustBe.config.allower;
+        if (!allower){
+          return resolve(false);
+        }
+
+        allower(user, activity, function(err, isAllowed){
+          if (err) { reject(err); }
+          resolve(isAllowed);
+        });
+      });
+
+      denierPromise.then(function(isDenied){
+        if (isDenied){
+          return mustBe.config.notAuthorized(req, res);
+        }
+
+        return allowerPromise;
+      }).then(function(isAllowed){
+        if (isAllowed){
+          return cb.apply(routeHandler, args);
+        }
+      }).then(function(){
+        var validator = mustBe.config.validators[activity];
+        validator(user, params, function(err, isAuthorized){
+          if (err) { throw err; }
+
+          if (isAuthorized){
+            return cb.apply(routeHandler, args);
+          } else {
+            return mustBe.config.notAuthorized(req, res);
+          }
+
+        });
+      }).then(undefined, function(err){
+        res.send(500, {});
+        setTimeout(function(){
+          throw err;
+        }, 0);
+      });
+
+    });
+  };
 };
 
 module.exports = MustBe;

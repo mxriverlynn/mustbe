@@ -32,6 +32,8 @@ Configurator.prototype.activities = function(cb){
   var activities = new Activities();
   cb(activities);
   this.config.validators = activities.getValidators();
+  this.config.denier = activities.denier;
+  this.config.allower = activities.allower;
 };
 
 Configurator.prototype.parameterMap = function(cb){
