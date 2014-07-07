@@ -2,7 +2,7 @@
   "name": "mustbe",
   "private": false,
   "version": "0.1.1",
-  "description": "An authorization framework for NodeJS apps",
+  "description": "An authorization framework for ExpressJS/Connect apps",
   "keywords": [
     "authorization",
     "security",
