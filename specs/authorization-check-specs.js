@@ -3,6 +3,36 @@ var MustBe = require("../mustbe/core");
 var helpers = require("./helpers");
 
 describe("authorization", function(){
+  describe("when doing authorization check", function(){
+    var async = new AsyncSpec(this);
+
+    var response;
+
+    async.beforeEach(function(done){
+      var mustBe = new MustBe();
+
+      mustBe.configure(function(config){
+        config.getUser(helpers.getValidUser);
+        config.isAuthenticated(helpers.isAuthenticated);
+
+        config.activities(function(activities){
+          activities.can("do thing", helpers.authorizedValidation);
+        });
+      });
+
+      var request = helpers.setup(mustBe, function(handler){
+        return mustBe.authorized("do thing", handler);
+      });
+
+      request(function(res){
+        response = res;
+        done();
+      });
+    });
+
+    it("should pass the user to the validator", function(){
+    });
+  });
 
   describe("when user is authorized", function(){
     var async = new AsyncSpec(this);

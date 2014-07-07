@@ -6,8 +6,6 @@ describe("user authenticated", function(){
 
   describe("when user is found", function(){
     var async = new AsyncSpec(this);
-
-    var user = {};
     var response;
 
     async.beforeEach(function(done){
@@ -43,15 +41,9 @@ describe("user authenticated", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(function(req, cb){
-          cb(null, undefined);
-        });
-        config.isAuthenticated(function(user, cb){
-          cb(null, !!user);
-        });
-        config.notAuthenticated(function(req, res){
-          res.send(403, {});
-        });
+        config.getUser(helpers.getNullUser);
+        config.isAuthenticated(helpers.isAuthenticated);
+        config.notAuthenticated(helpers.notAuthenticated);
       });
 
       var request = helpers.setup(mustBe, function(handler){

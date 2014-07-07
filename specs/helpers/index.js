@@ -4,6 +4,8 @@ var supertest = require("supertest");
 var user = {};
 
 var helpers = {
+  user: user,
+
   setup: function(mustBe, cb){
     var app = new express();
     mustBe.use(app);
@@ -30,6 +32,10 @@ var helpers = {
     cb(null, !!user); 
   },
 
+  notAuthenticated: function(req, res){
+    res.send(403, {});
+  },
+
   notAuthorized: function(req, res){
     res.send(403, {});
   },
@@ -44,6 +50,10 @@ var helpers = {
 
   getValidUser: function(req, cb){ 
     cb(null, user); 
+  },
+
+  getNullUser: function(req, cb){
+    cb(null, null);
   },
 
   expectResponseCode: function(response, code){
