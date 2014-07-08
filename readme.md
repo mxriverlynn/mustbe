@@ -47,15 +47,17 @@ mustBe.configure(function(config){
     // 3) if not explicitly allowed, then check authorization
 
     // explicitly deny anonymous users
-    activities.deny(function(user, activity){
+    activities.deny(function(user, activity, cb){
       var isAnonymous = (!!user);
-      return isAnonymous;
+      var isDenied = isAnonymous;
+      cb(null, isDenied);
     });
 
     // explicitly allow admin users
-    activities.allow(function(user, activity){
+    activities.allow(function(user, activity, cb){
       var isAdmin = (_.indexOf(user.roles, "admin") >= 0);
-      return isAdmin;
+      var isAllowed = isAdmin;
+      cb(null, isAllowed);
     });
 
     // configure an activity with an authorization check
