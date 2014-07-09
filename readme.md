@@ -1,6 +1,38 @@
 # mustBe
 
-Authorization framework for ExpressJS/Connect apps.
+**Authorization plumbing for ExpressJS/Connect apps.**
+
+mustBe is not a complete authorization framework, with roles
+and responsibilities and models and data access and everything
+that you need. Rather, it is the underlying plumbing that you
+need to secure your site. It allows you to fill in the 
+necessary parts to manage data access, roles and users, and
+gives you the activity based plumbing to secure it all. 
+
+## Authorization, Not Authentication
+
+mustBe is an authorization system - the part of a security system
+that decides whether or not you are allowed to do something. This
+is the second of authentication and authorization, where authentication
+simply determines who you are. 
+
+Specifically, mustBe is an activity based authorization system. It
+allows you to verify that a user has permissions to perform any
+given activity in your application.
+
+## What Is Activity Based Authorization?
+
+The gist of it is that you check whether or not a user
+has permission to perform an activity. How they get permission
+to do that activity is up to you. Maybe it's throug a role,
+maybe it's through data they have been assigned to. But the
+permission for the activity is what needs to be checked.
+
+For more detail on this, check out 
+[my 2011 article on using activity based authorization checks](http://lostechies.com/derickbailey/2011/05/24/dont-do-role-based-authorization-checks-do-activity-based-checks/). 
+It will give you the core of what you need to know about
+whey role-based authorization checks are a bad idea, and why
+activity based permissions are the way to go. 
 
 ## Install
 
