@@ -8,12 +8,12 @@ var helpers = {
 
   setupRoute: function(route, mustBe, cb){
     var app = new express();
-    mustBe.use(app);
 
     var router = express.Router();
     var handler = function(req, res){
       res.send({});
     };
+
     var authorizationCheck = cb(handler);
     router.get(route, authorizationCheck);
     app.use("/", router);

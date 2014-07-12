@@ -3,6 +3,7 @@ var MustBe = require("../mustbe/core");
 var helpers = require("./helpers");
 
 describe("authorization", function(){
+
   describe("when user is authorized", function(){
     var async = new AsyncSpec(this);
 

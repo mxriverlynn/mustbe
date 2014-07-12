@@ -11,6 +11,7 @@
   "eqnull": true,
   "browser": true,
   "globals": {
+    "setImmediate": true,
     "console": true,
     "require": true,
     "module": true,

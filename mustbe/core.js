@@ -1,12 +1,51 @@
 var Configurator = require("./configurator");
 var RSVP = require("rsvp");
 
-function MustBe(){
+// Helpers
+// -------
+
+function getParameterMap(req, config, activity){
+  var params;
+  var parameterMap = config.parameterMaps[activity];
+  if (parameterMap){
+    params = parameterMap(req);
+  }
+  return params;
 }
 
-MustBe.prototype.use = function(app){
+function handleOverrides(config, user, activity){
+  var denierPromise = new RSVP.Promise(function(resolve, reject){
+    var denier = config.denier;
+    if (!denier){ 
+      return resolve(false); 
+    }
 
-};
+    denier(user, activity, function(err, isDenied){
+      if (err) { reject(err); }
+      resolve(isDenied);
+    });
+  });
+
+  var allowerPromise = new RSVP.Promise(function(resolve, reject){
+    var allower = config.allower;
+    if (!allower){
+      return resolve(false);
+    }
+
+    allower(user, activity, function(err, isAllowed){
+      if (err) { reject(err); }
+      resolve(isAllowed);
+    });
+  });
+
+  return RSVP.all([denierPromise, allowerPromise]);
+}
+
+// MustBe Core
+// -----------
+
+function MustBe(){
+}
 
 MustBe.prototype.configure = function(cb){
   var configurator = new Configurator();
@@ -47,75 +86,48 @@ MustBe.prototype.authorized = function(activity, cb){
 
   var mustBe = this;
 
-  return function(req, res){
+  return function(req, res, next){
     var routeHandler = this;
-    var args = Array.prototype.slice.apply(arguments);
+    var handlerArgs = Array.prototype.slice.apply(arguments);
 
     mustBe.config.getUser(req, function(err, user){
       if (err) { throw err; }
 
-      var params;
-      var parameterMap = mustBe.config.parameterMaps[activity];
-      if (parameterMap){
-        params = parameterMap(req);
-      }
+      var override = handleOverrides(mustBe.config, user, activity, cb);
+      override.then(function(overrideArgs){
+        var isDenied = overrideArgs[0];
+        var isAllowed = overrideArgs[1];
 
-      var denierPromise = new RSVP.Promise(function(resolve, reject){
-        var denier = mustBe.config.denier;
-        if (!denier){ 
-          return resolve(false); 
-        }
-
-        denier(user, activity, function(err, isDenied){
-          if (err) { reject(err); }
-          resolve(isDenied);
-        });
-      });
-
-      var allowerPromise = new RSVP.Promise(function(resolve, reject){
-        var allower = mustBe.config.allower;
-        if (!allower){
-          return resolve(false);
-        }
-
-        allower(user, activity, function(err, isAllowed){
-          if (err) { reject(err); }
-          resolve(isAllowed);
-        });
-      });
-
-      denierPromise.then(function(isDenied){
+        // handle overrides
+        
         if (isDenied){
           return mustBe.config.notAuthorized(req, res);
         }
 
-        return allowerPromise;
-      }).then(function(isAllowed){
         if (isAllowed){
-          return cb.apply(routeHandler, args);
+          return cb.apply(routeHandler, handlerArgs);
         }
-      }).then(function(){
-        var validator = mustBe.config.validators[activity];
 
+        // handle validation of authorization
+
+        var validator = mustBe.config.validators[activity];
         if (!validator){
           return mustBe.config.notAuthorized(req, res);
         }
 
+        var params = getParameterMap(req, mustBe.config, activity);
         validator(user, params, function(err, isAuthorized){
           if (err) { throw err; }
 
           if (isAuthorized){
-            return cb.apply(routeHandler, args);
+            return cb.apply(routeHandler, handlerArgs);
           } else {
             return mustBe.config.notAuthorized(req, res);
           }
 
         });
       }).then(undefined, function(err){
-        res.send(500, {});
-        setTimeout(function(){
-          throw err;
-        }, 0);
+        next(err);
       });
 
     });
