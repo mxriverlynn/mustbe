@@ -40,6 +40,11 @@ MustBe.prototype.authenticated = function(cb){
 };
 
 MustBe.prototype.authorized = function(activity, cb){
+  if (!cb){
+    cb = activity;
+    activity = undefined;
+  }
+
   var mustBe = this;
 
   return function(req, res){
@@ -91,6 +96,11 @@ MustBe.prototype.authorized = function(activity, cb){
         }
       }).then(function(){
         var validator = mustBe.config.validators[activity];
+
+        if (!validator){
+          return mustBe.config.notAuthorized(req, res);
+        }
+
         validator(user, params, function(err, isAuthorized){
           if (err) { throw err; }
 
