@@ -1,10 +1,14 @@
 {
   "name": "mustbe",
   "private": false,
-  "version": "0.1.3",
-  "description": "An authorization framework for ExpressJS/Connect apps",
+  "version": "0.1.4",
+  "description": "Authorization plumbing for ExpressJS/Connect apps",
   "keywords": [
     "authorization",
+    "authorized",
+    "authenticated",
+    "activities",
+    "activity"
     "security",
     "cancan",
     "roles",
