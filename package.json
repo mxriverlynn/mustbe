@@ -8,7 +8,7 @@
     "authorized",
     "authenticated",
     "activities",
-    "activity"
+    "activity",
     "security",
     "cancan",
     "roles",
