@@ -40,14 +40,44 @@ activity based permissions are the way to go.
 
 ## How To Use It
 
-First you need to configure it
+In your app.js (or whatever bootstraps your app), require
+the mustBe module, and also bring in a mustbe-config module
+which you will define in a moment. 
+
+Call the `.config` method
+on the `mustBe` object, and pass in the function that is
+exported from the config module.
 
 ```js
-// configure mustBe
+// app.js
+
+var mustBe = require("mustbe");
+var mustBeConfig = require("./mustbe-config");
+mustBe.configure(mustBeConfig);
+```
+
+Now you can create a `mustbe-config.js` file for your application.
+Having the config file separate from the `app.js` bootstrapper
+file helpst to keep things clean.
+
+Open the `mustbe-config.js` file and build your configuration.
+At a minimum, you need these functions supplied:
+
+* `getUser`
+* `isAuthenticated`
+* `notAuthenticated`
+* `notAuthorized`
+
+Then you need to configure activities and/or overrides.
+
+Here is a complete configuration example from which you can start:
+
+```js
+// mustbe-config.js
 
 var mustBe = require("mustbe");
 
-mustBe.configure(function(config){
+module.exports = function(config){
 
   // core configuration
   // ------------------
@@ -150,10 +180,10 @@ mustBe.configure(function(config){
     });
   });
 
-});
+};
 ```
 
-Then you can run the `mustBe` functions on your routes.
+Now you can run the `mustBe` functions on your routes.
 
 ```js
 var mustbe = require("mustbe");
