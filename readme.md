@@ -156,28 +156,23 @@ module.exports = function(config){
 
   config.parameterMaps(function(params){
 
-    params.map({
-      // the activity to authorize
-      activity: "view thing",
-
-      // map a request parameters to the params
-      // that get passed in to the activity
-      // authorization function
-      getParams: function(req){
-        return {
-          id: req["id"]
-        }
-      }
+    // the activity being checked is the first param
+    // 
+    // the 2nd param maps a request object to the params
+    // that get passed in to the activity
+    // authorization function
+    params.map("view thing", function(req){
+      return {
+        id: req.params["id"]
+      };
     });
 
-    params.map({
-      activity: "edit thing",
-      getParams: function(req){
-        return {
-          id: req["id"]
-        }
-      }
+    params.map("edit thing", function(req){
+      return {
+        id: req.params["id"]
+      };
     });
+
   });
 
 };
