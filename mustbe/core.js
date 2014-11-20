@@ -53,10 +53,14 @@ MustBe.prototype.configure = function(cb){
   this.config = configurator.getConfig();
 };
 
-MustBe.prototype.authenticated = function(cb){
+MustBe.prototype.authenticated = function(cb, failure){
   var mustBe = this;
 
-  function handler(req, res){
+  if (!failure){
+    failure = mustBe.config.notAuthenticated;
+  }
+
+  function handler(req, res, next){
     var args = Array.prototype.slice.apply(arguments);
 
     mustBe.config.getUser(req, function(err, user){
@@ -68,7 +72,7 @@ MustBe.prototype.authenticated = function(cb){
         if (isAuth){
           cb.apply(this, args);
         } else {
-          mustBe.config.notAuthenticated(req, res);
+          failure(req, res, next);
         }
 
       });
@@ -78,13 +82,17 @@ MustBe.prototype.authenticated = function(cb){
   return handler;
 };
 
-MustBe.prototype.authorized = function(activity, cb){
+MustBe.prototype.authorized = function(activity, cb, failure){
+  var mustBe = this;
+
+  if (!failure){
+    failure = mustBe.config.notAuthorized;
+  }
+
   if (!cb){
     cb = activity;
     activity = undefined;
   }
-
-  var mustBe = this;
 
   return function(req, res, next){
     var routeHandler = this;
@@ -101,7 +109,7 @@ MustBe.prototype.authorized = function(activity, cb){
         // handle overrides
         
         if (isDenied){
-          return mustBe.config.notAuthorized(req, res);
+          return failure(req, res, next);
         }
 
         if (isAllowed){
@@ -112,7 +120,7 @@ MustBe.prototype.authorized = function(activity, cb){
 
         var validator = mustBe.config.validators[activity];
         if (!validator){
-          return mustBe.config.notAuthorized(req, res);
+          return failure(req, res, next);
         }
 
         var params = getParameterMap(req, mustBe.config, activity);
@@ -122,7 +130,7 @@ MustBe.prototype.authorized = function(activity, cb){
           if (isAuthorized){
             return cb.apply(routeHandler, handlerArgs);
           } else {
-            return mustBe.config.notAuthorized(req, res);
+            return failure(req, res, next);
           }
 
         });

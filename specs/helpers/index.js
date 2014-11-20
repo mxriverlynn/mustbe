@@ -73,6 +73,11 @@ var helpers = {
     expect(response.status).toBe(500);
     var idx = response.text.indexOf("Error: " + msg);
     expect(idx).toBe(0, "Expected error message '" + msg + "'");
+  },
+
+  expectRedirect: function(response, code, url){
+    expect(response.status).toBe(code);
+    expect(response.headers.location).toBe(url);
   }
 };
 
