@@ -1,4 +1,4 @@
-var Configurator = require("./configurator");
+var Configurator = require("./config");
 var RSVP = require("rsvp");
 
 // Helpers
