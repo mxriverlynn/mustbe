@@ -1,5 +1,7 @@
 var RSVP = require("rsvp");
 
+var RequestUserPrincipal = require("../principals/requestUserPrincipal");
+
 // Helpers
 // -------
 
@@ -48,28 +50,25 @@ function RouteHelpers(config){
 }
 
 RouteHelpers.prototype.authenticated = function(cb, failure){
-  var mustBe = this;
+  var that = this;
+  var config = this.config;
 
   if (!failure){
-    failure = mustBe.config.notAuthenticated;
+    failure = that.config.notAuthenticated;
   }
 
   function handler(req, res, next){
     var args = Array.prototype.slice.apply(arguments);
 
-    mustBe.config.getUser(req, function(err, user){
-      if (err) { throw err; }
+    var principal = new RequestUserPrincipal(req, config);
+    principal.isAuthenticated(function(err, isAuth){
+      if (err) { return next(err); }
 
-      mustBe.config.isAuthenticated(user, function(err, isAuth){
-        if (err) { throw err; }
-
-        if (isAuth){
-          cb.apply(this, args);
-        } else {
-          failure(req, res, next);
-        }
-
-      });
+      if (isAuth){
+        cb.apply(undefined, args);
+      } else {
+        failure.apply(undefined, args);
+      }
     });
   }
 
@@ -77,10 +76,10 @@ RouteHelpers.prototype.authenticated = function(cb, failure){
 };
 
 RouteHelpers.prototype.authorized = function(activity, cb, failure){
-  var mustBe = this;
+  var that = this;
 
   if (!failure){
-    failure = mustBe.config.notAuthorized;
+    failure = that.config.notAuthorized;
   }
 
   if (!cb){
@@ -92,10 +91,10 @@ RouteHelpers.prototype.authorized = function(activity, cb, failure){
     var routeHandler = this;
     var handlerArgs = Array.prototype.slice.apply(arguments);
 
-    mustBe.config.getUser(req, function(err, user){
+    that.config.getUser(req, function(err, user){
       if (err) { throw err; }
 
-      var override = handleOverrides(mustBe.config, user, activity, cb);
+      var override = handleOverrides(that.config, user, activity, cb);
       override.then(function(overrideArgs){
         var isDenied = overrideArgs[0];
         var isAllowed = overrideArgs[1];
@@ -112,12 +111,12 @@ RouteHelpers.prototype.authorized = function(activity, cb, failure){
 
         // handle validation of authorization
 
-        var validator = mustBe.config.validators[activity];
+        var validator = that.config.validators[activity];
         if (!validator){
           return failure(req, res, next);
         }
 
-        var params = getParameterMap(req, mustBe.config, activity);
+        var params = getParameterMap(req, that.config, activity);
         validator(user, params, function(err, isAuthorized){
           if (err) { throw err; }
 
