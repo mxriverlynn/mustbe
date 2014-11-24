@@ -18,8 +18,9 @@ describe("no activity name", function(){
         config.notAuthorized(helpers.notAuthorized);
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authorized(handler);
+        return routeHelpers.authorized(handler);
       });
 
       request(function(res){
@@ -54,8 +55,9 @@ describe("no activity name", function(){
         });
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authorized(handler);
+        return routeHelpers.authorized(handler);
       });
 
       request(function(res){
@@ -90,8 +92,9 @@ describe("no activity name", function(){
         });
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authorized(handler);
+        return routeHelpers.authorized(handler);
       });
 
       request(function(res){

@@ -16,8 +16,9 @@ describe("user authenticated", function(){
         config.isAuthenticated(helpers.isAuthenticated);
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authenticated(handler);
+        return routeHelpers.authenticated(handler);
       });
 
       request(function(res){
@@ -46,8 +47,9 @@ describe("user authenticated", function(){
         config.notAuthenticated(helpers.notAuthenticated);
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authenticated(handler);
+        return routeHelpers.authenticated(handler);
       });
 
       request(function(res){
@@ -77,8 +79,9 @@ describe("user authenticated", function(){
         });
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authenticated(handler);
+        return routeHelpers.authenticated(handler);
       });
 
       request(function(res){

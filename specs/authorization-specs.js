@@ -24,8 +24,9 @@ describe("authorization", function(){
         });
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return mustBe.authorized("do thing", handler);
+        return routeHelpers.authorized("do thing", handler);
       });
 
       request(function(res){
@@ -69,8 +70,9 @@ describe("authorization", function(){
         });
       });
 
+      var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/:foo", mustBe, function(handler){
-        return mustBe.authorized("do thing", handler);
+        return routeHelpers.authorized("do thing", handler);
       });
 
       request("/bar", function(res){

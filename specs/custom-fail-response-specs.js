@@ -22,7 +22,8 @@ describe("custom failure response", function(){
       }
 
       function authCheck(handler){
-        return mustBe.authenticated(handler, failure);
+        var routeHelpers = mustBe.routeHelpers();
+        return routeHelpers.authenticated(handler, failure);
       }
 
       var request = helpers.setupRoute("/", mustBe, authCheck);
@@ -62,7 +63,8 @@ describe("custom failure response", function(){
       }
 
       function authCheck(handler){
-        return mustBe.authorized("do thing", handler, failure);
+        var routeHelpers = mustBe.routeHelpers();
+        return routeHelpers.authorized("do thing", handler, failure);
       }
 
       var request = helpers.setupRoute("/", mustBe, authCheck);
