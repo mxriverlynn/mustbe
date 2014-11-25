@@ -1,10 +1,7 @@
 function UserIdentity(user, config){
   this.user = user;
   this.config = config;
+  this.isAuthenticated = this.config.isAuthenticated.bind(this, user);
 }
-
-UserIdentity.prototype.isAuthenticated = function(cb){
-  return this.config.isAuthenticated(this.user, cb);
-};
 
 module.exports = UserIdentity;
