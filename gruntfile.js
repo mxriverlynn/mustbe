@@ -42,7 +42,7 @@ module.exports = function(grunt){
 
     watch: {
       options: {
-        spawn: false
+        //spawn: false
       },
       specs: {
         files: ["mustbe/**/*.js", "specs/**/*.js"],
