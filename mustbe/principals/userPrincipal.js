@@ -3,14 +3,14 @@ var RSVP = require("rsvp");
 // helpers
 // -------
 
-function handleOverrides(config, user, activity){
+function handleOverrides(config, userIdentity, activity){
   var denierPromise = new RSVP.Promise(function(resolve, reject){
     var denier = config.denier;
     if (!denier){ 
       return resolve(false); 
     }
 
-    denier(user, activity, function(err, isDenied){
+    denier(userIdentity, activity, function(err, isDenied){
       if (err) { reject(err); }
       resolve(isDenied);
     });
@@ -22,7 +22,7 @@ function handleOverrides(config, user, activity){
       return resolve(false);
     }
 
-    allower(user, activity, function(err, isAllowed){
+    allower(userIdentity, activity, function(err, isAllowed){
       if (err) { reject(err); }
       resolve(isAllowed);
     });
@@ -33,23 +33,23 @@ function handleOverrides(config, user, activity){
 
 // http request, user principal
 // ----------------------------
-function UserPrincipal(user, config, params){
-  this.user = user;
+function UserPrincipal(userIdentity, config, params){
+  this.userIdentity = userIdentity;
   this.requestParams = params;
   this.config = config;
 }
 
 UserPrincipal.prototype.isAuthenticated = function(cb){
-  this.config.isAuthenticated(this.user, cb);
+  this.userIdentity.isAuthenticated(cb);
 };
 
 UserPrincipal.prototype.isAuthorized = function(activity, cb){
   var that = this;
   var config = this.config;
   var requestParams = this.requestParams;
-  var user = this.user;
+  var userIdentity = this.userIdentity;
 
-  var override = handleOverrides(config, user, activity);
+  var override = handleOverrides(config, userIdentity, activity);
   override.then(function(overrideArgs){
     var isDenied = overrideArgs[0];
     var isAllowed = overrideArgs[1];
@@ -74,7 +74,7 @@ UserPrincipal.prototype.isAuthorized = function(activity, cb){
       return cb(null, false);
     }
 
-    validator(user, requestParams, function(err, isAuthorized){
+    validator(userIdentity, requestParams, function(err, isAuthorized){
       if (err) { return cb(err); }
 
       if (isAuthorized){
