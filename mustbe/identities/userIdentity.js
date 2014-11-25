@@ -1,4 +1,3 @@
-
 function UserIdentity(user, config){
   this.user = user;
   this.config = config;

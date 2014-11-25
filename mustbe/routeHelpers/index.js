@@ -73,9 +73,9 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
 
       var params = paramsFromRequest(req, config, activity);
       var userIdentity = new UserIdentity(user, config);
-      var principal = new UserPrincipal(userIdentity, config, params);
+      var principal = new UserPrincipal(userIdentity, config);
 
-      principal.isAuthorized(activity, function(err, isAuth){
+      principal.isAuthorized(activity, params, function(err, isAuth){
         if (isAuth) { 
           return authcb.apply(undefined, handlerArgs);
         } else {
