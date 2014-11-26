@@ -61,14 +61,8 @@ Having the config file separate from the `app.js` bootstrapper
 file helpst to keep things clean.
 
 Open the `mustbe-config.js` file and build your configuration.
-At a minimum, you need these functions supplied:
-
-* `getUser`
-* `isAuthenticated`
-* `notAuthenticated`
-* `notAuthorized`
-
-Then you need to configure activities and/or overrides.
+Provide configuratin for your user identity, route helpers, 
+activities and/or overrides.
 
 Here is a complete configuration example from which you can start:
 
@@ -79,25 +73,63 @@ var mustBe = require("mustbe");
 
 module.exports = function(config){
 
-  // core configuration
-  // ------------------
+  // route helper configuration
+  // --------------------------
 
-  config.getUser(function(req, cb){
-    cb(null, req.user);
+  config.routeHelpers(function(rh){
+
+    // get the current user from the request object
+    rh.getUser(function(req, cb){
+      cb(null, req.user);
+    });
+
+    // what do we do when the user is not authenticated?
+    rh.notAuthenticated(function(req, res, next){
+      res.redirect("/login?msg=you are not logged in");
+    });
+
+    // what do we do when the user is not authorized?
+    rh.notAuthorized(function(req, res, next){
+      res.redirect("/login?msg=you are not authorized");
+    });
+
+    // parameter map -> activity params
+    // ---------------------------------
+
+    rh.parameterMaps(function(params){
+
+      // the activity being checked is the first param
+      // 
+      // the 2nd param maps a request object to the params
+      // that get passed in to the activity
+      // authorization function
+      params.map("view thing", function(req){
+        return {
+          id: req.params["id"]
+        };
+      });
+
+      params.map("edit thing", function(req){
+        return {
+          id: req.params["id"]
+        };
+      });
+
+    });
+
   });
 
-  config.isAuthenticated(function(user, cb){
-    cb(null, !!user);
-  });
+  // user identity configuration
+  // ---------------------------
 
-  // what do we do when the user is not authenticated?
-  config.notAuthenticated(function(req, res){
-    res.redirect("/login?msg=you are not logged in");
-  });
+  config.userIdentity(function(id){
 
-  // what do we do when the user is not authorized?
-  config.notAuthorized(function(req, res){
-    res.redirect("/login?msg=you are not authorized");
+    // determine if this user is authenticated or not
+    id.isAuthenticated(function(user, cb){
+      var isAuthenticated = !!user;
+      cb(null, isAuthenticated);
+    });
+
   });
 
   // activitiy configuration
@@ -128,18 +160,6 @@ module.exports = function(config){
   });
 
   // an authorization check
-  function authorizeEditThing(user, params, cb){
-    var id = params["id"];
-
-    // do some check to see if the user can
-    // edit the thing in question
-    user.someThing(id, function(err, thing){
-      var hasThing = !!thing;
-      cb(err, hasThing);
-    });
-  }
-
-  // an authorization check
   function authorizeViewThing(user, params, cb){
     var id = params["id"];
 
@@ -151,29 +171,17 @@ module.exports = function(config){
     });
   }
 
-  // parameter map -> activity params
-  // ---------------------------------
+  // an authorization check
+  function authorizeEditThing(user, params, cb){
+    var id = params["id"];
 
-  config.parameterMaps(function(params){
-
-    // the activity being checked is the first param
-    // 
-    // the 2nd param maps a request object to the params
-    // that get passed in to the activity
-    // authorization function
-    params.map("view thing", function(req){
-      return {
-        id: req.params["id"]
-      };
+    // do some check to see if the user can
+    // edit the thing in question
+    user.someThing(id, function(err, thing){
+      var hasThing = !!thing;
+      cb(err, hasThing);
     });
-
-    params.map("edit thing", function(req){
-      return {
-        id: req.params["id"]
-      };
-    });
-
-  });
+  }
 
 };
 ```

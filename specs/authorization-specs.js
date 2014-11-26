@@ -56,6 +56,14 @@ describe("authorization", function(){
       mustBe.configure(function(config){
         config.routeHelpers(function(rh){
           rh.getUser(helpers.getValidUser);
+
+          rh.parameterMaps(function(params){
+            params.map("do thing", function(req){
+              return {
+                foo: req.params["foo"]
+              }
+            });
+          });
         });
 
         config.userIdentity(function(id){
@@ -69,13 +77,6 @@ describe("authorization", function(){
           });
         });
 
-        config.parameterMaps(function(params){
-          params.map("do thing", function(req){
-            return {
-              foo: req.params["foo"]
-            }
-          });
-        });
       });
 
       var routeHelpers = mustBe.routeHelpers();

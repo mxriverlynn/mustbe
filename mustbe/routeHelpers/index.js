@@ -71,7 +71,7 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
     config.routeHelpers.getUser(req, function(err, user){
       if (err) { return next(err); }
 
-      var params = paramsFromRequest(req, config, activity);
+      var params = paramsFromRequest(req, config.routeHelpers, activity);
       var userIdentity = new UserIdentity(user, config);
       var principal = new UserPrincipal(userIdentity, config);
 

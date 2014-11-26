@@ -1,5 +1,4 @@
 var Activities = require("./activities");
-var ParameterMap = require("./parameter-map");
 var UserIdentity = require("./user-identity");
 var RouteHelpers = require("./route-helpers");
 
@@ -32,12 +31,6 @@ Configurator.prototype.activities = function(cb){
   this.config.validators = activities.getValidators();
   this.config.denier = activities.denier;
   this.config.allower = activities.allower;
-};
-
-Configurator.prototype.parameterMaps = function(cb){
-  var parameterMap = new ParameterMap();
-  cb(parameterMap);
-  this.config.parameterMaps = parameterMap.getMaps();
 };
 
 module.exports = Configurator;
