@@ -13,8 +13,13 @@ describe("authorization", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
 
         config.activities(function(activities){
           activities.can("do thing", function(u, params, cb){
@@ -49,8 +54,13 @@ describe("authorization", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
 
         config.activities(function(activities){
           activities.can("do thing", function(user, p, cb){
@@ -60,13 +70,11 @@ describe("authorization", function(){
         });
 
         config.parameterMaps(function(params){
-
           params.map("do thing", function(req){
             return {
               foo: req.params["foo"]
             }
           });
-
         });
       });
 

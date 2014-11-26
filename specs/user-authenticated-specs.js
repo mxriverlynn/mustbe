@@ -12,8 +12,13 @@ describe("user authenticated", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
       });
 
       var routeHelpers = mustBe.routeHelpers();
@@ -42,9 +47,13 @@ describe("user authenticated", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getNullUser);
-        config.isAuthenticated(helpers.isAuthenticated);
-        config.notAuthenticated(helpers.notAuthenticated);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getNullUser);
+          rh.notAuthenticated(helpers.notAuthenticated);
+        });
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
       });
 
       var routeHelpers = mustBe.routeHelpers();
@@ -73,9 +82,11 @@ describe("user authenticated", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(function(req, cb){
-          var err = new Error("some error");
-          cb(err);
+        config.routeHelpers(function(rh){
+          rh.getUser(function(req, cb){
+            var err = new Error("some error");
+            cb(err);
+          });
         });
       });
 

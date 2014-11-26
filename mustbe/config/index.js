@@ -1,5 +1,7 @@
 var Activities = require("./activities");
 var ParameterMap = require("./parameter-map");
+var UserIdentity = require("./user-identity");
+var RouteHelpers = require("./route-helpers");
 
 function Configurator(){
   this.config = {
@@ -12,20 +14,16 @@ Configurator.prototype.getConfig = function(){
   return this.config;
 };
 
-Configurator.prototype.getUser = function(cb){
-  this.config.getUser = cb;
+Configurator.prototype.routeHelpers = function(cb){
+  var routeHelpers = new RouteHelpers();
+  cb(routeHelpers);
+  this.config.routeHelpers = routeHelpers;
 };
 
-Configurator.prototype.isAuthenticated = function(cb){
-  this.config.isAuthenticated = cb;
-};
-
-Configurator.prototype.notAuthenticated = function(cb){
-  this.config.notAuthenticated = cb;
-};
-
-Configurator.prototype.notAuthorized = function(cb){
-  this.config.notAuthorized = cb;
+Configurator.prototype.userIdentity = function(cb){
+  var userIdentity = new UserIdentity();
+  cb(userIdentity);
+  this.config.userIdentity = userIdentity;
 };
 
 Configurator.prototype.activities = function(cb){

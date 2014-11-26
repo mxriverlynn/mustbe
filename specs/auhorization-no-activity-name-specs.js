@@ -13,9 +13,15 @@ describe("no activity name", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
-        config.notAuthorized(helpers.notAuthorized);
+
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
       });
 
       var routeHelpers = mustBe.routeHelpers();
@@ -44,9 +50,14 @@ describe("no activity name", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
-        config.notAuthorized(helpers.notAuthorized);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
 
         config.activities(function(activities){
           activities.allow(function(user, activity, cb){
@@ -81,9 +92,14 @@ describe("no activity name", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
-        config.notAuthorized(helpers.notAuthorized);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
 
         config.activities(function(activities){
           activities.allow(function(user, activity, cb){

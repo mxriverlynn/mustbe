@@ -13,8 +13,13 @@ describe("custom failure response", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getNullUser);
-        config.isAuthenticated(helpers.isAuthenticated);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getNullUser);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
       });
 
       function failure(req, res, next){
@@ -49,9 +54,14 @@ describe("custom failure response", function(){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        config.getUser(helpers.getValidUser);
-        config.isAuthenticated(helpers.isAuthenticated);
-        config.notAuthorized(helpers.notAuthorized);
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
 
         config.activities(function(activities){
           activities.can("do thing", helpers.unauthorizedValidation);

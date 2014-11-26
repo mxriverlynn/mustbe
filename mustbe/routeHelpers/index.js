@@ -25,13 +25,13 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
   var config = this.config;
 
   if (!notAuthCB){
-    notAuthCB = this.config.notAuthenticated;
+    notAuthCB = this.config.routeHelpers.notAuthenticated;
   }
 
   function handler(req, res, next){
     var args = Array.prototype.slice.apply(arguments);
 
-    config.getUser(req, function(err, user){
+    config.routeHelpers.getUser(req, function(err, user){
       if (err) { return next(err); }
 
       var userIdentity = new UserIdentity(user, config);
@@ -57,7 +57,7 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
   var config = this.config;
 
   if (!notauthcb){
-    notauthcb = config.notAuthorized;
+    notauthcb = config.routeHelpers.notAuthorized;
   }
 
   if (!authcb){
@@ -68,7 +68,7 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
   return function(req, res, next){
     var handlerArgs = Array.prototype.slice.apply(arguments);
     
-    config.getUser(req, function(err, user){
+    config.routeHelpers.getUser(req, function(err, user){
       if (err) { return next(err); }
 
       var params = paramsFromRequest(req, config, activity);
