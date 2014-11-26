@@ -189,31 +189,42 @@ module.exports = function(config){
 Now you can run the `mustBe` functions on your routes.
 
 ```js
-var mustbe = require("mustbe");
+var mustbe = require("mustbe").routeHelpers();
 var express = require("express");
 var router = express.Router();
 
 router.get("/", index);
 router.get("/profile", mustBe.authenticated(showProfile));
-router.get("/:id", mustBe.authorized("view thing", view));
+router.get("/:id", mustBe.authorized("view thing", view, cannotView));
 router.get("/:id/edit", mustBe.authorized("edit thing", edit));
 
-function index(req, res) {
+function index(req, res, next) {
   res.render("index", { title: "Express" });
 }
 
-function showProfile(req, res){
+function showProfile(req, res, next){
   res.render("/user/profile", {
     user: req.user
   });
 }
 
-function view(req, res){
+function edit(req, res, next){
   // ...
 }
 
-function edit(req, res){
-  // ...
+function view(req, res, next){
+  // this method fires when the "view thing"
+  // authorization succeeds, allowing the
+  // user to view the thing
+
+  res.render("/something");
+}
+
+function cannotView(req, res, next){
+  // this method fires when the "view thing"
+  // authorization fails
+  res.status(404);
+  res.send({});
 }
 
 module.exports = router;
