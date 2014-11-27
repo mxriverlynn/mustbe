@@ -37,6 +37,7 @@ function handleOverrides(config, identity, activity){
 function Verifier(identity, config){
   this.identity = identity;
   this.config = config;
+  this.activities = config.activities.get(identity.type);
 }
 
 Verifier.prototype.isAuthorized = function(activity, requestParams, cb){
@@ -44,7 +45,13 @@ Verifier.prototype.isAuthorized = function(activity, requestParams, cb){
   var config = this.config;
   var identity = this.identity;
 
-  var override = handleOverrides(config, identity, activity);
+  var validators = this.activities.getValidators();
+  var denyAllowConfig = {
+    denier: this.activities.denier,
+    allower: this.activities.allower
+  };
+
+  var override = handleOverrides(denyAllowConfig, identity, activity);
   override.then(function(overrideArgs){
     var isDenied = overrideArgs[0];
     var isAllowed = overrideArgs[1];
@@ -63,7 +70,7 @@ Verifier.prototype.isAuthorized = function(activity, requestParams, cb){
 
     // handle validation of authorization
 
-    var validator = config.validators[activity];
+    var validator = validators[activity];
     if (!validator){
       // denied, isAuth = false;
       return cb(null, false);

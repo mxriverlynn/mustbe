@@ -1,6 +1,7 @@
 var RSVP = require("rsvp");
 
-var UserPrincipal = require("../principals/userPrincipal");
+var Verifier = require("../verifier");
+var Principal = require("../principals");
 var UserIdentity = require("../identities/userIdentity");
 
 function paramsFromRequest(req, config, activity){
@@ -35,7 +36,8 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
       if (err) { return next(err); }
 
       var userIdentity = new UserIdentity(user, config);
-      var principal = new UserPrincipal(userIdentity, config);
+      var verifier = new Verifier(userIdentity, config);
+      var principal = new Principal(userIdentity, verifier);
       principal.isAuthenticated(function(err, isAuth){
         if (err) { return next(err); }
 
@@ -73,7 +75,8 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
 
       var params = paramsFromRequest(req, config.routeHelpers, activity);
       var userIdentity = new UserIdentity(user, config);
-      var principal = new UserPrincipal(userIdentity, config);
+      var verifier = new Verifier(userIdentity, config);
+      var principal = new Principal(userIdentity, verifier);
 
       principal.isAuthorized(activity, params, function(err, isAuth){
         if (isAuth) { 

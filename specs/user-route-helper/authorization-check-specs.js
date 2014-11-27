@@ -1,11 +1,12 @@
 var AsyncSpec = require("jasmine-async")(jasmine);
-var MustBe = require("../mustbe/core");
-var helpers = require("./helpers");
+var MustBe = require("../../mustbe/core");
+var helpers = require("../helpers");
 
-describe("user authenticated", function(){
+describe("authorization", function(){
 
-  describe("when user is found", function(){
+  describe("when user is authorized", function(){
     var async = new AsyncSpec(this);
+
     var response;
 
     async.beforeEach(function(done){
@@ -19,11 +20,15 @@ describe("user authenticated", function(){
         config.userIdentity(function(id){
           id.isAuthenticated(helpers.isAuthenticated);
         });
+
+        config.activities(function(activities){
+          activities.can("do thing", helpers.authorizedValidation);
+        });
       });
 
       var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authenticated(handler);
+        return routeHelpers.authorized("do thing", handler);
       });
 
       request(function(res){
@@ -38,7 +43,7 @@ describe("user authenticated", function(){
 
   });
 
-  describe("when user is not found", function(){
+  describe("when user is not authorized", function(){
     var async = new AsyncSpec(this);
 
     var response;
@@ -48,17 +53,22 @@ describe("user authenticated", function(){
 
       mustBe.configure(function(config){
         config.routeHelpers(function(rh){
-          rh.getUser(helpers.getNullUser);
-          rh.notAuthenticated(helpers.notAuthenticated);
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
         });
+
         config.userIdentity(function(id){
           id.isAuthenticated(helpers.isAuthenticated);
+        });
+
+        config.activities(function(activities){
+          activities.can("do thing", helpers.unauthorizedValidation);
         });
       });
 
       var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authenticated(handler);
+        return routeHelpers.authorized("do thing", handler);
       });
 
       request(function(res){
@@ -73,7 +83,7 @@ describe("user authenticated", function(){
 
   });
 
-  describe("when getting user causes error", function(){
+  describe("when there is no authorization check for an activity", function(){
     var async = new AsyncSpec(this);
 
     var response;
@@ -83,16 +93,18 @@ describe("user authenticated", function(){
 
       mustBe.configure(function(config){
         config.routeHelpers(function(rh){
-          rh.getUser(function(req, cb){
-            var err = new Error("some error");
-            cb(err);
-          });
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
         });
       });
 
       var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authenticated(handler);
+        return routeHelpers.authorized("do thing", handler);
       });
 
       request(function(res){
@@ -101,10 +113,9 @@ describe("user authenticated", function(){
       });
     });
 
-    it("should throw the error", function(){
-      helpers.expectResponseError(response, "some error");
+    it("should not allow request", function(){
+      helpers.expectResponseCode(response, 403);
     });
 
   });
-
 });

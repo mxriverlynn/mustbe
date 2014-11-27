@@ -1,11 +1,17 @@
 var Activities = require("./activities");
 var UserIdentity = require("./user-identity");
 var RouteHelpers = require("./route-helpers");
+var Registry = require("../registry");
 
 function Configurator(){
+  var activities = new Activities();
+  var activityRegistry = new Registry(activities);
+
+  this.defaultPrincipal = "user";
   this.config = {
     validators: {},
-    parameterMaps: {}
+    parameterMaps: {},
+    activities: activityRegistry
   };
 }
 
@@ -25,12 +31,19 @@ Configurator.prototype.userIdentity = function(cb){
   this.config.userIdentity = userIdentity;
 };
 
-Configurator.prototype.activities = function(cb){
-  var activities = new Activities();
+Configurator.prototype.activities = function(principalName, cb){
+  if (!cb) { 
+    cb = principalName;
+    principalName = this.defaultPrincipal;
+  }
+
+  var activities = this.config.activities.get(principalName);
+  if (!activities){
+    activities = new Activities();
+    this.config.activities.register(principalName, activities);
+  }
+
   cb(activities);
-  this.config.validators = activities.getValidators();
-  this.config.denier = activities.denier;
-  this.config.allower = activities.allower;
 };
 
 module.exports = Configurator;

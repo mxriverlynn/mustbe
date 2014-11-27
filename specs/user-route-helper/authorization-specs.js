@@ -1,6 +1,6 @@
 var AsyncSpec = require("jasmine-async")(jasmine);
-var MustBe = require("../mustbe/core");
-var helpers = require("./helpers");
+var MustBe = require("../../mustbe/core");
+var helpers = require("../helpers");
 
 describe("authorization", function(){
 

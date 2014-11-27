@@ -1,10 +1,47 @@
 var AsyncSpec = require("jasmine-async")(jasmine);
-var MustBe = require("../mustbe/core");
-var helpers = require("./helpers");
+var MustBe = require("../../mustbe/core");
+var helpers = require("../helpers");
 
-describe("authorization", function(){
+describe("no activity name", function(){
 
-  describe("when user is authorized", function(){
+  describe("when authorizing with no activity name, and not explicitly allowed or denied", function(){
+    var async = new AsyncSpec(this);
+
+    var response;
+
+    async.beforeEach(function(done){
+      var mustBe = new MustBe();
+
+      mustBe.configure(function(config){
+
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
+      });
+
+      var routeHelpers = mustBe.routeHelpers();
+      var request = helpers.setupRoute("/", mustBe, function(handler){
+        return routeHelpers.authorized(handler);
+      });
+
+      request(function(res){
+        response = res;
+        done();
+      });
+    });
+
+    it("should not allow request", function(){
+      helpers.expectResponseCode(response, 403);
+    });
+
+  });
+
+  describe("when authorizing with no activity name, and explicitly denied", function(){
     var async = new AsyncSpec(this);
 
     var response;
@@ -15,6 +52,7 @@ describe("authorization", function(){
       mustBe.configure(function(config){
         config.routeHelpers(function(rh){
           rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
         });
 
         config.userIdentity(function(id){
@@ -22,13 +60,57 @@ describe("authorization", function(){
         });
 
         config.activities(function(activities){
-          activities.can("do thing", helpers.authorizedValidation);
+          activities.allow(function(user, activity, cb){
+            cb(null, false);
+          });
         });
       });
 
       var routeHelpers = mustBe.routeHelpers();
       var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authorized("do thing", handler);
+        return routeHelpers.authorized(handler);
+      });
+
+      request(function(res){
+        response = res;
+        done();
+      });
+    });
+
+    it("should not allow request", function(){
+      helpers.expectResponseCode(response, 403);
+    });
+
+  });
+
+  describe("when authorizing with no activity name, but explicitly allowed", function(){
+    var async = new AsyncSpec(this);
+
+    var response;
+
+    async.beforeEach(function(done){
+      var mustBe = new MustBe();
+
+      mustBe.configure(function(config){
+        config.routeHelpers(function(rh){
+          rh.getUser(helpers.getValidUser);
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+
+        config.userIdentity(function(id){
+          id.isAuthenticated(helpers.isAuthenticated);
+        });
+
+        config.activities(function(activities){
+          activities.allow(function(user, activity, cb){
+            cb(null, true);
+          });
+        });
+      });
+
+      var routeHelpers = mustBe.routeHelpers();
+      var request = helpers.setupRoute("/", mustBe, function(handler){
+        return routeHelpers.authorized(handler);
       });
 
       request(function(res){
@@ -43,79 +125,4 @@ describe("authorization", function(){
 
   });
 
-  describe("when user is not authorized", function(){
-    var async = new AsyncSpec(this);
-
-    var response;
-
-    async.beforeEach(function(done){
-      var mustBe = new MustBe();
-
-      mustBe.configure(function(config){
-        config.routeHelpers(function(rh){
-          rh.getUser(helpers.getValidUser);
-          rh.notAuthorized(helpers.notAuthorized);
-        });
-
-        config.userIdentity(function(id){
-          id.isAuthenticated(helpers.isAuthenticated);
-        });
-
-        config.activities(function(activities){
-          activities.can("do thing", helpers.unauthorizedValidation);
-        });
-      });
-
-      var routeHelpers = mustBe.routeHelpers();
-      var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authorized("do thing", handler);
-      });
-
-      request(function(res){
-        response = res;
-        done();
-      });
-    });
-
-    it("should not allow request", function(){
-      helpers.expectResponseCode(response, 403);
-    });
-
-  });
-
-  describe("when there is no authorization check for an activity", function(){
-    var async = new AsyncSpec(this);
-
-    var response;
-
-    async.beforeEach(function(done){
-      var mustBe = new MustBe();
-
-      mustBe.configure(function(config){
-        config.routeHelpers(function(rh){
-          rh.getUser(helpers.getValidUser);
-          rh.notAuthorized(helpers.notAuthorized);
-        });
-
-        config.userIdentity(function(id){
-          id.isAuthenticated(helpers.isAuthenticated);
-        });
-      });
-
-      var routeHelpers = mustBe.routeHelpers();
-      var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authorized("do thing", handler);
-      });
-
-      request(function(res){
-        response = res;
-        done();
-      });
-    });
-
-    it("should not allow request", function(){
-      helpers.expectResponseCode(response, 403);
-    });
-
-  });
 });
