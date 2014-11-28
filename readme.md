@@ -58,10 +58,10 @@ mustBe.configure(mustBeConfig);
 
 Now you can create a `mustbe-config.js` file for your application.
 Having the config file separate from the `app.js` bootstrapper
-file helpst to keep things clean.
+file helps to keep things clean.
 
 Open the `mustbe-config.js` file and build your configuration.
-Provide configuratin for your user identity, route helpers, 
+Provide configuration for your user identity, route helpers, 
 activities and/or overrides.
 
 Here is a complete configuration example from which you can start:
@@ -132,7 +132,7 @@ module.exports = function(config){
 
   });
 
-  // activitiy configuration
+  // activity configuration
   // -----------------------
 
   config.activities(function(activities){
