@@ -31,9 +31,8 @@ describe("custom identity authorization check", function(){
         });
 
         var routeHelpers = mustBe.routeHelpers();
-        var identity = mustBe.getIdentity(identityType);
         var request = helpers.setupRoute("/", mustBe, function(handler){
-          return routeHelpers.authorizeIdentity(identity, "do thing", handler);
+          return routeHelpers.authorizeIdentity(identityType, "do thing", handler);
         });
 
         request(function(res){
@@ -59,7 +58,7 @@ describe("custom identity authorization check", function(){
             this.type = identityType;
             this.config = config;
             this.isAuthenticated = function(cb){
-              cb(true);
+              cb(null, true);
             };
           };
 
@@ -75,9 +74,8 @@ describe("custom identity authorization check", function(){
         });
 
         var routeHelpers = mustBe.routeHelpers();
-        var identity = mustBe.getIdentity(identityType);
         var request = helpers.setupRoute("/", mustBe, function(handler){
-          return routeHelpers.authorizeIdentity(identity, "do thing", handler);
+          return routeHelpers.authorizeIdentity(identityType, "do thing", handler);
         });
 
         request(function(res){

@@ -54,7 +54,7 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
   return handler;
 };
 
-RouteHelpers.prototype.authorizeIdentity = function(identity, activity, authcb, notauthcb){
+RouteHelpers.prototype.authorizeIdentity = function(identityTypeName, activity, authcb, notauthcb){
   var that = this;
   var config = this.config;
 
@@ -70,6 +70,7 @@ RouteHelpers.prototype.authorizeIdentity = function(identity, activity, authcb, 
   return function(req, res, next){
     var handlerArgs = Array.prototype.slice.apply(arguments);
     
+    var identity = that.getIdentity(identityTypeName, config);
     var params = paramsFromRequest(req, config.routeHelpers, activity);
     var verifier = new Verifier(identity, config);
     var principal = new Principal(identity, verifier);
@@ -119,6 +120,11 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
 
     });
   };
+};
+
+RouteHelpers.prototype.getIdentity = function(identityTypeName, config){
+  var IdentityType = config.getIdentity(identityTypeName, config);
+  return new IdentityType(config);
 };
 
 module.exports = RouteHelpers;

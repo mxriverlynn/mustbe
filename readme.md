@@ -230,6 +230,52 @@ function cannotView(req, res, next){
 module.exports = router;
 ```
 
+## Custom Identities
+
+The default use case for mustBe assumes a user that is logged in. However, it can
+be used with a custome `Identity` type, to check authorization rules against
+any identity desired.
+
+Custom Identity must conform to the following protocol:
+
+* Constructor function receiving a `config` argument
+
+The object instance returned from the constructor function must implement
+the following protocol:
+
+* a `type` attribute as a string, identifying the identity type
+* a `isAuthenticated` method, receiving a callback
+
+The callback for the `isAuthenticated` method recieves an optional `Error` 
+object as the first parameter, and a boolean value as the second parameter to
+determine whether or not the Identity is authorized.
+
+### Example Custom Identity
+
+The following is a very basic example of a custom Identity:
+
+```js
+var MyIdentity = function(config){
+  this.type = identityType;
+  this.config = config;
+  this.isAuthenticated = function(cb){
+    cb(true);
+  };
+};
+```
+
+Once defined, the Identity's constructor function can be registered with the
+`config.addIdentity` method. This method takes in a string as the Identity
+type name, and the Identity constructor function as a second parameter.
+
+```js
+module.exports = function(config){
+  // ...
+  
+  config.addIdentity("my-identity", MyIdentity);
+};
+```
+
 ## Legal Junk
 
 Copyright 2014 Muted Solutions, LLC. All Rights Reserved.

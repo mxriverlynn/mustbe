@@ -36,8 +36,8 @@ Configurator.prototype.userIdentity = function(cb){
   cb(this.config.userIdentity);
 };
 
-Configurator.prototype.addIdentity = function(identityTypeName, identityType){
-  this.config.identities.register(identityTypeName, identityType);
+Configurator.prototype.addIdentity = function(identityTypeName, IdentityType){
+  this.config.identities.register(identityTypeName, IdentityType);
 };
 
 Configurator.prototype.activities = function(principalName, cb){
