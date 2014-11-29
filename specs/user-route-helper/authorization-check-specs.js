@@ -113,8 +113,10 @@ describe("authorization", function(){
       });
     });
 
-    it("should not allow request", function(){
-      helpers.expectResponseCode(response, 403);
+    it("should throw an activity not found error", function(){
+      var errorMessage = "Activity Not Found, do thing";
+      var errorType = "ActivityNotFoundException";
+      helpers.expectResponseError(response, errorMessage, errorType);
     });
 
   });

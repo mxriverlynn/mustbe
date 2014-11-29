@@ -36,7 +36,9 @@ describe("no activity name", function(){
     });
 
     it("should not allow request", function(){
-      helpers.expectResponseCode(response, 403);
+      var errorMessage = "Activity Not Found, undefined";
+      var errorType = "ActivityNotFoundException";
+      helpers.expectResponseError(response, errorMessage, errorType);
     });
 
   });
@@ -60,8 +62,8 @@ describe("no activity name", function(){
         });
 
         config.activities(function(activities){
-          activities.allow(function(user, activity, cb){
-            cb(null, false);
+          activities.deny(function(user, activity, cb){
+            cb(null, true);
           });
         });
       });
