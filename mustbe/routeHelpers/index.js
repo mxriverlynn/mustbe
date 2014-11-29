@@ -54,6 +54,37 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
   return handler;
 };
 
+RouteHelpers.prototype.authorizeIdentity = function(identity, activity, authcb, notauthcb){
+  var that = this;
+  var config = this.config;
+
+  if (!notauthcb){
+    notauthcb = config.routeHelpers.notAuthorized;
+  }
+
+  if (!authcb){
+    authcb = activity;
+    activity = undefined;
+  }
+
+  return function(req, res, next){
+    var handlerArgs = Array.prototype.slice.apply(arguments);
+    
+    var params = paramsFromRequest(req, config.routeHelpers, activity);
+    var verifier = new Verifier(identity, config);
+    var principal = new Principal(identity, verifier);
+
+    principal.isAuthorized(activity, params, function(err, isAuth){
+      if (isAuth) { 
+        return authcb.apply(undefined, handlerArgs);
+      } else {
+        return notauthcb.apply(undefined, handlerArgs);
+      }
+    });
+
+  };
+};
+
 RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
   var that = this;
   var config = this.config;

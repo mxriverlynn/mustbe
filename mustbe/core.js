@@ -20,4 +20,8 @@ MustBe.prototype.routeHelpers = function(){
   return routeHelpers;
 };
 
+MustBe.prototype.getIdentity = function(identityTypeName){
+  return this.config.getIdentity(identityTypeName);
+};
+
 module.exports = MustBe;

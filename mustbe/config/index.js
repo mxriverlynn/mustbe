@@ -1,17 +1,26 @@
-var Activities = require("./activities");
-var UserIdentity = require("./user-identity");
-var RouteHelpers = require("./route-helpers");
+var ActivityConfig = require("./activities");
+var UserIdentityConfig = require("./user-identity");
+var RouteHelperConfig = require("./route-helpers");
 var Registry = require("../registry");
 
 function Configurator(){
-  var activities = new Activities();
+  var activities = new ActivityConfig();
   var activityRegistry = new Registry(activities);
+  var identityRegistry = new Registry();
+  var routeHelpers = new RouteHelperConfig();
+  var userIdentity = new UserIdentityConfig();
 
   this.defaultPrincipal = "user";
   this.config = {
+    routeHelpers: routeHelpers,
+    userIdentity: userIdentity,
     validators: {},
     parameterMaps: {},
-    activities: activityRegistry
+    activities: activityRegistry,
+    identities: identityRegistry,
+    getIdentity: function(identityTypeName){
+      return this.identities.get(identityTypeName);
+    }
   };
 }
 
@@ -20,15 +29,15 @@ Configurator.prototype.getConfig = function(){
 };
 
 Configurator.prototype.routeHelpers = function(cb){
-  var routeHelpers = new RouteHelpers();
-  cb(routeHelpers);
-  this.config.routeHelpers = routeHelpers;
+  cb(this.config.routeHelpers);
 };
 
 Configurator.prototype.userIdentity = function(cb){
-  var userIdentity = new UserIdentity();
-  cb(userIdentity);
-  this.config.userIdentity = userIdentity;
+  cb(this.config.userIdentity);
+};
+
+Configurator.prototype.addIdentity = function(identityTypeName, identityType){
+  this.config.identities.register(identityTypeName, identityType);
 };
 
 Configurator.prototype.activities = function(principalName, cb){
@@ -39,7 +48,7 @@ Configurator.prototype.activities = function(principalName, cb){
 
   var activities = this.config.activities.get(principalName);
   if (!activities){
-    activities = new Activities();
+    activities = new ActivityConfig();
     this.config.activities.register(principalName, activities);
   }
 
