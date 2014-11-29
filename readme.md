@@ -276,6 +276,23 @@ module.exports = function(config){
 };
 ```
 
+With this identity registered, you can add activities for the identity by
+passing in an identitype type to the `config.activities` method.
+
+```js
+module.exports = function(config){
+  // ...
+  
+  config.activities("my-identity", function(activities){
+    activities.can("do-something", function(user, params, cb){
+      // determine if user can do something or not
+      // hard code that they can do it, as an example
+      cb(null, true);
+    });
+  });
+};
+```
+
 ## Legal Junk
 
 Copyright 2014 Muted Solutions, LLC. All Rights Reserved.
