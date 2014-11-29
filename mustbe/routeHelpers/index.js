@@ -76,13 +76,14 @@ RouteHelpers.prototype.authorizeIdentity = function(identityTypeName, activity, 
     var principal = new Principal(identity, verifier);
 
     principal.isAuthorized(activity, params, function(err, isAuth){
+      if (err) { return next(err); }
+
       if (isAuth) { 
         return authcb.apply(undefined, handlerArgs);
       } else {
         return notauthcb.apply(undefined, handlerArgs);
       }
     });
-
   };
 };
 

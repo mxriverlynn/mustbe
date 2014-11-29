@@ -73,7 +73,9 @@ Verifier.prototype.isAuthorized = function(activity, requestParams, cb){
     var validator = validators[activity];
     if (!validator){
       // denied, isAuth = false;
-      return cb(null, false);
+      var noActivityError = new Error("Activity Not Found, " + activity);
+      noActivityError.name = "ActivityNotFoundException";
+      return cb(noActivityError, false);
     }
 
     validator(identity, requestParams, function(err, isAuthorized){
