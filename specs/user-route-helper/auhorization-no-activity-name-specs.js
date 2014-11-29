@@ -29,7 +29,7 @@ describe("no activity name", function(){
         return routeHelpers.authorized(handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -71,7 +71,7 @@ describe("no activity name", function(){
         return routeHelpers.authorized(handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -113,7 +113,7 @@ describe("no activity name", function(){
         return routeHelpers.authorized(handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });

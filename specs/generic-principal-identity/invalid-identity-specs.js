@@ -6,27 +6,14 @@ describe("invalid identity authorization check", function(){
 
   describe("when requesting authorization for a custom identity that does not exist", function(){
     var identityType = "my-identity";
-    var nonExistentType = "i don't exist";
+    var nonExistentType = "non-existent";
     var async = new AsyncSpec(this);
-    var response;
+    var mustBe, err, response;
 
     async.beforeEach(function(done){
-      var mustBe = new MustBe();
+      mustBe = new MustBe();
 
       mustBe.configure(function(config){
-        var MyIdentity = function(config){
-          this.type = identityType;
-          this.config = config;
-          this.isAuthenticated = function(cb){
-            cb(true);
-          };
-        };
-
-        config.addIdentity(identityType, MyIdentity);
-
-        config.activities(identityType, function(activities){
-          activities.can("do thing", helpers.authorizedValidation);
-        });
       });
 
       var routeHelpers = mustBe.routeHelpers();
@@ -34,13 +21,22 @@ describe("invalid identity authorization check", function(){
         return routeHelpers.authorizeIdentity(nonExistentType, "do thing", handler);
       });
 
-      request(function(res){
+      request(function(e, res){
         response = res;
         done();
       });
     });
 
     it("should throw an 'identity not found' exception", function(){
+      var errorMessage = "Identity Not Found, " + nonExistentType;
+      var errorType = "IdentityNotFoundException";
+      helpers.expectResponseError(response, errorMessage, errorType);
+    });
+  });
+
+  describe("when requesting authorization for an activity that does not exist on a custom identity", function(){
+
+    it("should not authorize the activity", function(){
       throw new Error("not implemented yet");
     });
   });

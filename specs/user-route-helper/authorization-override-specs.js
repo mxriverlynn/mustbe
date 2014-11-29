@@ -34,7 +34,7 @@ describe("authorization overrides", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -75,7 +75,7 @@ describe("authorization overrides", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -121,7 +121,7 @@ describe("authorization overrides", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -169,7 +169,7 @@ describe("authorization overrides", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -218,7 +218,7 @@ describe("authorization overrides", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });

@@ -35,7 +35,7 @@ describe("custom identity authorization check", function(){
           return routeHelpers.authorizeIdentity(identityType, "do thing", handler);
         });
 
-        request(function(res){
+        request(function(err, res){
           response = res;
           done();
         });
@@ -78,7 +78,7 @@ describe("custom identity authorization check", function(){
           return routeHelpers.authorizeIdentity(identityType, "do thing", handler);
         });
 
-        request(function(res){
+        request(function(err, res){
           response = res;
           done();
         });

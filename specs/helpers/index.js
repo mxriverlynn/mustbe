@@ -10,7 +10,7 @@ var helpers = {
     var app = new express();
 
     var router = express.Router();
-    var handler = function(req, res){
+    var handler = function(req, res, next){
       res.send({});
     };
 
@@ -27,8 +27,7 @@ var helpers = {
       supertest(app)
         .get(route)
         .end(function(err, res){
-          if (err) { throw err; }
-          cb(res);
+          cb(err, res);
         });
     }
   },
@@ -69,10 +68,13 @@ var helpers = {
     }
   },
 
-  expectResponseError: function(response, msg){
+  expectResponseError: function(response, message, errorType){
+    if (!errorType) { errorType = "Error"; }
+
+    var errorMessage = errorType + ": " + message
     expect(response.status).toBe(500);
-    var idx = response.text.indexOf("Error: " + msg);
-    expect(idx).toBe(0, "Expected error message '" + msg + "'");
+    var idx = response.text.indexOf(errorMessage);
+    expect(idx).toBe(0, "Expected error message '" + errorMessage + "'");
   },
 
   expectRedirect: function(response, code, url){

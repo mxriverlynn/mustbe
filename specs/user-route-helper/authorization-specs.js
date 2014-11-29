@@ -34,7 +34,7 @@ describe("authorization", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -84,7 +84,7 @@ describe("authorization", function(){
         return routeHelpers.authorized("do thing", handler);
       });
 
-      request("/bar", function(res){
+      request("/bar", function(err, res){
         response = res;
         done();
       });

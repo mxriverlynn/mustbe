@@ -33,7 +33,7 @@ describe("custom failure response", function(){
 
       var request = helpers.setupRoute("/", mustBe, authCheck);
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -79,7 +79,7 @@ describe("custom failure response", function(){
 
       var request = helpers.setupRoute("/", mustBe, authCheck);
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });

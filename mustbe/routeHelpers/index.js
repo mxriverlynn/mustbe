@@ -124,6 +124,11 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
 
 RouteHelpers.prototype.getIdentity = function(identityTypeName, config){
   var IdentityType = config.getIdentity(identityTypeName, config);
+  if (!IdentityType){
+    var noIdErr = new Error("Identity Not Found, " + identityTypeName);
+    noIdErr.name = "IdentityNotFoundException";
+    throw noIdErr;
+  }
   return new IdentityType(config);
 };
 

@@ -26,7 +26,7 @@ describe("user authenticated", function(){
         return routeHelpers.authenticated(handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -61,7 +61,7 @@ describe("user authenticated", function(){
         return routeHelpers.authenticated(handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
@@ -95,7 +95,7 @@ describe("user authenticated", function(){
         return routeHelpers.authenticated(handler);
       });
 
-      request(function(res){
+      request(function(err, res){
         response = res;
         done();
       });
