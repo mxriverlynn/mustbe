@@ -84,7 +84,7 @@ describe("custom identity authorization check", function(){
         });
       });
 
-      it("should authorize the activity", function(){
+      it("should not authorize the activity", function(){
         helpers.expectResponseCode(response, 403);
       });
     });

@@ -46,8 +46,10 @@ Configurator.prototype.activities = function(principalName, cb){
     principalName = this.defaultPrincipal;
   }
 
-  var activities = this.config.activities.get(principalName);
-  if (!activities){
+  var activities;
+  if (this.config.activities.hasValue(principalName)){
+    activities = this.config.activities.get(principalName);
+  } else {
     activities = new ActivityConfig();
     this.config.activities.register(principalName, activities);
   }
