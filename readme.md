@@ -268,20 +268,14 @@ Once defined, the Identity's constructor function can be registered with the
 `config.addIdentity` method. This method takes in a string as the Identity
 type name, and the Identity constructor function as a second parameter.
 
-```js
-module.exports = function(config){
-  // ...
-  
-  config.addIdentity("my-identity", MyIdentity);
-};
-```
-
-With this identity registered, you can add activities for the identity by
+After registering it, you can add activities for the identity by
 passing in an identitype type to the `config.activities` method.
 
 ```js
 module.exports = function(config){
   // ...
+  
+  config.addIdentity("my-identity", MyIdentity);
   
   config.activities("my-identity", function(activities){
     activities.can("do-something", function(user, params, cb){
