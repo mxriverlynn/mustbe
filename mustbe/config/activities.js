@@ -1,21 +1,19 @@
 function Activities(){
-  this.validators = {};
+  this.config = {
+    validators: {}
+  };
 }
 
-Activities.prototype.getValidators = function(){
-  return this.validators;
-};
-
 Activities.prototype.can = function(activity, validator){
-  this.validators[activity] = validator;
+  this.config.validators[activity] = validator;
 };
 
 Activities.prototype.deny = function(denier){
-  this.denier = denier;
+  this.config.denier = denier;
 };
 
 Activities.prototype.allow = function(allower){
-  this.allower = allower;
+  this.config.allower = allower;
 };
 
 module.exports = Activities;

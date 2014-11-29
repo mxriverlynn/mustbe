@@ -11,13 +11,21 @@ function Configurator(){
   this.routeHelpersConfig = new RouteHelperConfig();
   this.userIdentityConfig = new UserIdentityConfig();
 
-  this.defaultPrincipal = "user";
+  this.defaultIdentityType = "user";
   this.config = {
     routeHelpers: this.routeHelpersConfig.config,
-    userIdentity: this.userIdentityConfig,
+    userIdentity: this.userIdentityConfig.config,
     validators: {},
     activities: this.activityRegistry,
     identities: this.identityRegistry,
+    getActivities: function(identityTypeName){
+      var activitiesConfig = that.activityRegistry.get(identityTypeName);
+      var activities;
+      if (activitiesConfig) {
+        activities = activitiesConfig.config;
+      }
+      return activities;
+    },
     getIdentity: function(identityTypeName){
       return that.identityRegistry.get(identityTypeName);
     }
@@ -40,21 +48,21 @@ Configurator.prototype.addIdentity = function(identityTypeName, IdentityType){
   this.identityRegistry.register(identityTypeName, IdentityType);
 };
 
-Configurator.prototype.activities = function(principalName, cb){
+Configurator.prototype.activities = function(identityTypeName, cb){
   if (!cb) { 
-    cb = principalName;
-    principalName = this.defaultPrincipal;
+    cb = identityTypeName;
+    identityTypeName = this.defaultIdentityType;
   }
 
-  var activities;
-  if (this.activityRegistry.hasValue(principalName)){
-    activities = this.activityRegistry.get(principalName);
+  var activityConfig;
+  if (this.activityRegistry.hasValue(identityTypeName)){
+    activityConfig = this.activityRegistry.get(identityTypeName);
   } else {
-    activities = new ActivityConfig();
-    this.activityRegistry.register(principalName, activities);
+    activityConfig = new ActivityConfig();
+    this.activityRegistry.register(identityTypeName, activityConfig);
   }
 
-  cb(activities);
+  cb(activityConfig);
 };
 
 module.exports = Configurator;
