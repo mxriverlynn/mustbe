@@ -32,8 +32,8 @@ var helpers = {
     }
   },
 
-  isAuthenticated: function(user, cb){ 
-    cb(null, !!user); 
+  isAuthenticated: function(identity, cb){ 
+    cb(null, !!identity); 
   },
 
   notAuthenticated: function(req, res){
@@ -44,11 +44,11 @@ var helpers = {
     res.send(403, {});
   },
 
-  authorizedValidation: function(user, params, cb){
+  authorizedValidation: function(identity, params, cb){
     cb(null, true);
   },
 
-  unauthorizedValidation: function(user, params, cb){
+  unauthorizedValidation: function(identity, params, cb){
     cb(null, false);
   },
 

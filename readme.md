@@ -141,14 +141,16 @@ module.exports = function(config){
     // 3) if not explicitly allowed, then check authorization
 
     // explicitly deny anonymous users
-    activities.deny(function(user, activity, cb){
-      var isAnonymous = (!!user);
+    activities.deny(function(identity, activity, cb){
+      var isAnonymous = !identity.isAuthenticated();
       var isDenied = isAnonymous;
       cb(null, isDenied);
     });
 
     // explicitly allow admin users
-    activities.allow(function(user, activity, cb){
+    activities.allow(function(identity, activity, cb){
+      // assuming UserIdentity
+      var user = identity.user;
       var isAdmin = (_.indexOf(user.roles, "admin") >= 0);
       var isAllowed = isAdmin;
       cb(null, isAllowed);
@@ -160,24 +162,24 @@ module.exports = function(config){
   });
 
   // an authorization check
-  function authorizeViewThing(user, params, cb){
+  function authorizeViewThing(identity, params, cb){
     var id = params["id"];
 
-    // do some check to see if the user can
+    // do some check to see if the identity can
     // view the thing in question
-    user.anotherThing(id, function(err, thing){
+    someLib.anotherThing(id, function(err, thing){
       var hasThing = !!thing;
       cb(err, hasThing);
     });
   }
 
   // an authorization check
-  function authorizeEditThing(user, params, cb){
+  function authorizeEditThing(identity, params, cb){
     var id = params["id"];
 
     // do some check to see if the user can
     // edit the thing in question
-    user.someThing(id, function(err, thing){
+    anotherLib.someThing(id, function(err, thing){
       var hasThing = !!thing;
       cb(err, hasThing);
     });
@@ -278,8 +280,8 @@ module.exports = function(config){
   config.addIdentity("my-identity", MyIdentity);
   
   config.activities("my-identity", function(activities){
-    activities.can("do-something", function(user, params, cb){
-      // determine if user can do something or not
+    activities.can("do-something", function(identity, params, cb){
+      // determine if the identity can do something or not
       // hard code that they can do it, as an example
       cb(null, true);
     });
