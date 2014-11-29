@@ -56,38 +56,24 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
 
 RouteHelpers.prototype.authorizeIdentity = function(identityTypeName, activity, authcb, notauthcb){
   var that = this;
-  var config = this.config;
-
-  if (!notauthcb){
-    notauthcb = config.routeHelpers.notAuthorized;
-  }
-
-  if (!authcb){
-    authcb = activity;
-    activity = undefined;
-  }
-
-  return function(req, res, next){
-    var handlerArgs = Array.prototype.slice.apply(arguments);
-    
+  return this._handleAuthorization(activity, authcb, notauthcb, function(req, config, cb){
     var identity = that.getIdentity(identityTypeName, config);
-    var params = paramsFromRequest(req, config.routeHelpers, activity);
-    var verifier = new Verifier(identity, config);
-    var principal = new Principal(identity, verifier);
-
-    principal.isAuthorized(activity, params, function(err, isAuth){
-      if (err) { return next(err); }
-
-      if (isAuth) { 
-        return authcb.apply(undefined, handlerArgs);
-      } else {
-        return notauthcb.apply(undefined, handlerArgs);
-      }
-    });
-  };
+    cb(null, identity);
+  });
 };
 
 RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
+  return this._handleAuthorization(activity, authcb, notauthcb, function(req, config, cb){
+    config.routeHelpers.getUser(req, function(err, user){
+      if (err) { return cb(err); }
+
+      var identity = new UserIdentity(user, config);
+      cb(null, identity);
+    });
+  });
+};
+
+RouteHelpers.prototype._handleAuthorization = function(activity, authcb, notauthcb, getIdentitycb){
   var that = this;
   var config = this.config;
 
@@ -103,13 +89,12 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
   return function(req, res, next){
     var handlerArgs = Array.prototype.slice.apply(arguments);
     
-    config.routeHelpers.getUser(req, function(err, user){
+    getIdentitycb(req, config, function(err, identity){
       if (err) { return next(err); }
 
       var params = paramsFromRequest(req, config.routeHelpers, activity);
-      var userIdentity = new UserIdentity(user, config);
-      var verifier = new Verifier(userIdentity, config);
-      var principal = new Principal(userIdentity, verifier);
+      var verifier = new Verifier(identity, config);
+      var principal = new Principal(identity, verifier);
 
       principal.isAuthorized(activity, params, function(err, isAuth){
         if (err) { return next(err); }
@@ -120,7 +105,6 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
           return notauthcb.apply(undefined, handlerArgs);
         }
       });
-
     });
   };
 };

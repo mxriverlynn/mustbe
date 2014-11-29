@@ -74,7 +74,7 @@ var helpers = {
     var errorMessage = errorType + ": " + message
     expect(response.status).toBe(500);
     var idx = response.text.indexOf(errorMessage);
-    expect(idx).toBe(0, "Expected error message '" + errorMessage + "'");
+    expect(idx).toBe(0, "Expected error message '" + errorMessage + "', but got '" + response.text + "'");
   },
 
   expectRedirect: function(response, code, url){

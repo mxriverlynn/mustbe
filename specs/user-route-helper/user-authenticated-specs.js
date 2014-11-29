@@ -107,4 +107,37 @@ describe("user authenticated", function(){
 
   });
 
+  describe("when there is not getUser method, and trying to authorize user", function(){
+    var async = new AsyncSpec(this);
+
+    var response;
+
+    async.beforeEach(function(done){
+      var mustBe = new MustBe();
+
+      mustBe.configure(function(config){
+        config.routeHelpers(function(rh){
+          rh.notAuthorized(helpers.notAuthorized);
+        });
+      });
+
+      var routeHelpers = mustBe.routeHelpers();
+      var request = helpers.setupRoute("/", mustBe, function(handler){
+        return routeHelpers.authorized("foo", handler);
+      });
+
+      request(function(err, res){
+        response = res;
+        done();
+      });
+    });
+
+    it("should throw an user saying can't get user", function(){
+      var errType = "NoGetUserMethodException";
+      var msg = "You must specify a getUser method on the mustBe config.routeHelpers"; 
+      helpers.expectResponseError(response, msg, errType);
+    });
+
+  });
+
 });
