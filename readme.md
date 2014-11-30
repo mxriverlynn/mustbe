@@ -1,6 +1,6 @@
-# MustBe
+# MustBe: Authorization Plumbing For NodeJS / Express Apps
 
-**Authorization plumbing for NodeJS/ExpressJS apps.**
+![](./assets/authorized-access-only.jpg)
 
 MustBe is not a complete authorization framework, with roles
 and responsibilities and models and data access and everything
