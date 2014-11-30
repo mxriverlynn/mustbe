@@ -1,8 +1,8 @@
-# mustBe
+# MustBe
 
-**Authorization plumbing for ExpressJS/Connect apps.**
+**Authorization plumbing for NodeJS/ExpressJS apps.**
 
-mustBe is not a complete authorization framework, with roles
+MustBe is not a complete authorization framework, with roles
 and responsibilities and models and data access and everything
 that you need. Rather, it is the underlying plumbing that you
 need to secure your site. It allows you to fill in the 
@@ -11,12 +11,12 @@ gives you the activity based plumbing to secure it all.
 
 ## Authorization, Not Authentication
 
-mustBe is an authorization system - the part of a security system
+MustBe is an authorization system - the part of a security system
 that decides whether or not you are allowed to do something. This
 is the second of authentication and authorization, where authentication
 simply determines who you are. 
 
-Specifically, mustBe is an activity based authorization system. It
+Specifically, MustBe is an activity based authorization system. It
 allows you to verify that a user has permissions to perform any
 given activity in your application.
 
@@ -54,7 +54,7 @@ save it to your package.json file.
 ### Configure Once In Your App
 
 In your app.js (or whatever bootstraps your app), require
-the mustBe module, and also bring in a mustbe-config module
+the MustBe module, and also bring in a mustbe-config module
 which you will define in a moment. 
 
 Call the `.config` method
@@ -83,13 +83,8 @@ Here is a basic configuration example from which you can start:
 
 ```js
 // ./mustbe-config.js
-
 var mustBe = require("mustbe");
-
 module.exports = function(config){
-
-  // route helper configuration
-  // --------------------------
 
   config.routeHelpers(function(rh){
     // get the current user from the request object
@@ -103,27 +98,10 @@ module.exports = function(config){
     });
   });
 
-  // user identity configuration
-  // ---------------------------
-
-  config.userIdentity(function(id){
-    // determine if this user is authenticated or not
-    id.isAuthenticated(function(user, cb){
-      var isAuthenticated = !!user;
-      cb(null, isAuthenticated);
-    });
-  });
-
-  // activity configuration
-  // -----------------------
-
   config.activities(function(activities){
     // configure an activity with an authorization check
     activities.can("view thing", function(identity, params, cb){
       var id = params["id"];
-
-      // do some check to see if the identity can
-      // view the thing in question
       someLib.anotherThing(id, function(err, thing){
         var hasThing = !!thing;
         cb(err, hasThing);
@@ -148,8 +126,12 @@ function view(req, res, next){
 }
 ```
 
+Be sure to read the full documentation, linked above, for the
+complete set of options and methods that can be called to
+configure and use MustBe.
+
 ## Legal Junk
 
-Copyright 2014 Muted Solutions, LLC. All Rights Reserved.
+MustBe is Copyright 2014 Muted Solutions, LLC. All Rights Reserved.
 
 Distributed under [MIT License](http://mutedsolutions.mit-license.org).
