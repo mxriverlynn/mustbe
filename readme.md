@@ -34,10 +34,6 @@ It will give you the core of what you need to know about
 whey role-based authorization checks are a bad idea, and why
 activity based permissions are the way to go. 
 
-## Install
-
-`npm install --save mustbe`
-
 ## Documentation
 
 Detailed documentation about the configuration and use of
@@ -45,9 +41,17 @@ MustBe can be found in the [documentation folder](docs).
 
 * [Core Configuration](docs/configure.md)
 * [Autorizing Express Routes](docs/authorize-routes.md)
+* [Using As Express Middleware](docs/middleware.md)
 * [Custom Identities](docs/custom-identities.md)
 
 ## Getting Started
+
+The first thing you need to do is install MustBe, and
+save it to your package.json file.
+
+`npm install --save mustbe`
+
+### Configure Once In Your App
 
 In your app.js (or whatever bootstraps your app), require
 the mustBe module, and also bring in a mustbe-config module
