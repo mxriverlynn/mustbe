@@ -89,6 +89,7 @@ module.exports = function(config){
   config.routeHelpers(function(rh){
     // get the current user from the request object
     rh.getUser(function(req, cb){
+      // return cb(err); if there is an error
       cb(null, req.user);
     });
 
@@ -103,8 +104,9 @@ module.exports = function(config){
     activities.can("view thing", function(identity, params, cb){
       var id = params["id"];
       someLib.anotherThing(id, function(err, thing){
+        if (err) { return cb(err); }
         var hasThing = !!thing;
-        cb(err, hasThing);
+        cb(null, hasThing);
       });
     });
   });
