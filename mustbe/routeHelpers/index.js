@@ -1,5 +1,3 @@
-var RSVP = require("rsvp");
-
 var Verifier = require("../verifier");
 var Principal = require("../principals");
 var UserIdentity = require("../identities/userIdentity");
