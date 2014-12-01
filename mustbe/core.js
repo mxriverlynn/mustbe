@@ -1,5 +1,3 @@
-var RSVP = require("rsvp");
-
 var Configurator = require("./config");
 var RouteHelpers = require("./routeHelpers");
 
