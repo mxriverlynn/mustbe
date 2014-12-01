@@ -40,7 +40,7 @@ Detailed documentation about the configuration and use of
 MustBe can be found in the [documentation folder](docs).
 
 * [Core Configuration](docs/configure.md)
-* [Autorizing Express Routes](docs/authorize-routes.md)
+* [Authorizing Express Routes](docs/authorize-routes.md)
 * [Using As Express Middleware](docs/middleware.md)
 * [Custom Identities](docs/custom-identities.md)
 
