@@ -1,7 +1,7 @@
 ## Using As Express Middleware
 
 MustBe can easily be used as middleware to provide authorization
-for an entire tree of routes, or as a global middlware to
+for an entire tree of routes, or as a global middleware to
 ensure authorization or authentication. This is useful in many
 scenarios:
 
@@ -26,7 +26,7 @@ for the entire folder, but you don't want to copy & paste the
 same authorization code on to all of the individual routes,
 you can do that using MustBe as middleware.
 
-Set up an activitity, such as "admin.view" in your
+Set up an activity, such as "admin.view" in your
 [MustBe configuration](./configure.md), and then `use` the
 [routeHelper for authorization](./authorize-routes.md) as
 middlware in the Express App.
