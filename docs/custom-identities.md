@@ -15,7 +15,7 @@ the following protocol:
 * a `isAuthenticated` method, receiving a callback
 
 The callback for the `isAuthenticated` method recieves an optional `Error` 
-object as the first parameter, and a boolean value as the second parameter to
+object as the first parameter, and a Boolean value as the second parameter to
 determine whether or not the Identity is authorized.
 
 ### Example Custom Identity
@@ -37,7 +37,7 @@ Once defined, the Identity's constructor function can be registered with the
 type name, and the Identity constructor function as a second parameter.
 
 After registering it, you can add activities for the identity by
-passing in an identitype type to the `config.activities` method.
+passing in an identity type to the `config.activities` method.
 
 ```js
 module.exports = function(config){

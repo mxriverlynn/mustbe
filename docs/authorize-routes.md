@@ -2,7 +2,7 @@
 
 Once you have MustBe configured, you can use it to authorize
 Express routes. Doing this allows you to determine who can
-take what actions in your application, based on the configued
+take what actions in your application, based on the configured
 activities within your system. 
 
 Please see the [configuration documentation](./configure.md)
