@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1 This is the homepage.
+  p 
+    | Click these links and see what happens. Then log in
+    | and try again.
+
+  - if (alert)
+    p &nbsp;
+    p(style="padding: 2em; border: 1px solid #900; background-color: #fdd; font-weight: bold; color: #900")
+      = alert
+
+  - if (message)
+    p &nbsp;
+    p(style="padding: 2em; border: 1px solid #090; background-color: #dfd; font-weight: bold; color: #090")
+      = message
+
+  p
+    ul
+      li
+        a(href="/profile") Profile
+      li
+        a(href="/admin") Admin
+
+  p
+    h2 
+      a(href="/login") Login
+    h2
+      a(href="/login/logout") Logout
