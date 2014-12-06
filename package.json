@@ -1,7 +1,7 @@
 {
   "name": "mustbe",
   "private": false,
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Authorization plumbing for ExpressJS/Connect apps",
   "keywords": [
     "authorization",
