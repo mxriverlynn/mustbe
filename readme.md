@@ -44,6 +44,21 @@ MustBe can be found in the [documentation folder](docs).
 * [Using As Express Middleware](docs/middleware.md)
 * [Custom Identities](docs/custom-identities.md)
 
+## Demo App
+
+There is a small demo app located in the [/demo](./demo)
+folder of this repository. You can run the demo app by
+going in to that folder and running the following:
+
+````
+npm install
+
+npm start
+```
+
+Then go to `http://localhost:3000` and you will see a small
+demonstration of various MustBe features.
+
 ## Getting Started
 
 The first thing you need to do is install MustBe, and
