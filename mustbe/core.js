@@ -19,7 +19,13 @@ MustBe.prototype.routeHelpers = function(){
 };
 
 MustBe.prototype.getIdentity = function(identityTypeName){
-  return this.config.getIdentity(identityTypeName);
+  var IdentityType = this.config.getIdentity(identityTypeName);
+  if (!IdentityType){
+    var noIdErr = new Error("Identity Not Found, " + identityTypeName);
+    noIdErr.name = "IdentityNotFoundException";
+    throw noIdErr;
+  }
+  return new IdentityType(this.config);
 };
 
 module.exports = MustBe;

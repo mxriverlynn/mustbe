@@ -25,9 +25,11 @@ config.userIdentity(function(id){
 
   // determine if this user is authenticated or not
   id.isAuthenticated(function(user, cb){
+    // note that the "user" in this case, is the user
+    // that was supplied by the routeHelpers.getUser function
     var isAuthenticated = false;
     if (user) {
-      isAuthenticated = user.isAuthenticated;
+      isAuthenticated = user.isLoggedIn();
     }
     cb(null, isAuthenticated);
   });

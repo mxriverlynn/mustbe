@@ -1,8 +1,13 @@
 function UserIdentity(user, config){
   this.user = user;
   this.config = config;
-  this.isAuthenticated = this.config.userIdentity.isAuthenticated.bind(this, user);
 }
+
+UserIdentity.prototype.isAuthenticated = function(cb){
+  var user = this.user;
+  var isAuth = this.config.userIdentity.isAuthenticated;
+  return isAuth.call(this, user, cb);
+};
 
 UserIdentity.prototype.type = "user";
 

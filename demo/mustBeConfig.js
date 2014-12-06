@@ -42,12 +42,9 @@ module.exports = function(config){
       // user list, or something like that. but for this 
       // hard coded demo app, anyone can view the user list, 
       // if they are logged in
-      var user = identity.user;
-      if (user) {
-        cb(null, true);
-      } else {
-        cb(null, false);
-      }
+      identity.isAuthenticated(function(err, isAuth){
+        return cb(err, isAuth);
+      });
     });
 
     activities.can("admin", function(identity, params, cb){
