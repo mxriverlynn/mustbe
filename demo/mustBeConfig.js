@@ -36,8 +36,12 @@ module.exports = function(config){
 
   config.activities(function(activities){
 
-    activities.can("view.profile", function(identity, params, cb){
-      // anyone can view the profile, if they are logged in
+    activities.can("users.view", function(identity, params, cb){
+      // normally, you would make calls to your database and
+      // check if the logged in person is allowed to see the
+      // user list, or something like that. but for this 
+      // hard coded demo app, anyone can view the user list, 
+      // if they are logged in
       var user = identity.user;
       if (user) {
         cb(null, true);
@@ -47,14 +51,9 @@ module.exports = function(config){
     });
 
     activities.can("admin", function(identity, params, cb){
-      // have to be logged in before i check if you're an admin
-      var user = identity.user;
-      if (!user) {
-        return cb(null, false); 
-      }
-
       // now check if you're an admin. this may involve database
       // calls or other service calls.
+      var user = identity.user;
       var isAdmin = (user.roles.indexOf("admin") > -1);
       cb(null, isAdmin);
     });
