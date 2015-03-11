@@ -106,7 +106,7 @@ config.activities(function(activities){
   // never be able to do anything.
   // alternatively, use the "activity" param to run logic
   // against who can / cannot access that activity
-  activities.allow(function(identity, activity, cb){
+  activities.deny(function(identity, activity, cb){
     var user = identity.user; 
     var deny = false;
     if (user.isAnonymous)){
