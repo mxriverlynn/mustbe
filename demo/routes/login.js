@@ -17,7 +17,7 @@ router.post("/", function(req, res, next){
   var password = req.body.password;
 
   User.login(username, password, function(err, user){
-    if (err) { return next; }
+    if (err) { return next(); }
 
     // store cookie for later use
     if (user){
