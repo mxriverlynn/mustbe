@@ -31,7 +31,7 @@ module.exports = function(grunt){
         extensions: "js",
         specNameMatcher: "[Ss][Pp][Ee][Cc][Ss]",
         jUnit: {
-          report: true,
+          report: false,
           savePath : "./build/reports/jasmine/",
           useDotNotation: true,
           consolidate: true
