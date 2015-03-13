@@ -72,6 +72,11 @@ Verifier.prototype.isAuthorized = function(activity, requestParams, cb){
 
     var validator = validators[activity];
     if (!validator){
+      // global "deny" or "allow" defined but not passed
+      if(denyAllowConfig.denier || denyAllowConfig.allower) {
+        return cb(null, false);
+      }
+
       var noActivityError = new Error("Activity Not Found, " + activity);
       noActivityError.name = "ActivityNotFoundException";
       return cb(noActivityError, false);
