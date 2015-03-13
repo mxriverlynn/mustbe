@@ -37,11 +37,11 @@ var helpers = {
   },
 
   notAuthenticated: function(req, res){
-    res.status(403).send({});
+    res.send(403, {});
   },
 
   notAuthorized: function(req, res){
-    res.status(403).send({});
+    res.send(403, {});
   },
 
   authorizedValidation: function(identity, params, cb){
