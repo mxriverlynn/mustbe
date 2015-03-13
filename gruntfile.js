@@ -1,3 +1,6 @@
+var util = require("util");
+util.print = process.stdout.write.bind(process.stdout);
+
 module.exports = function(grunt){
   grunt.initConfig({
     pkg: grunt.file.readJSON("package.json"),
