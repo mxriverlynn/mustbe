@@ -109,7 +109,7 @@ config.activities(function(activities){
   activities.deny(function(identity, activity, cb){
     var user = identity.user; 
     var deny = false;
-    if (user.isAnonymous)){
+    if (user.isAnonymous()){
       deny = true;
     }
     cb(null, deny);
