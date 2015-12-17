@@ -22,8 +22,8 @@ describe("no activity name", function(){
       });
 
       var routeHelpers = mustBe.routeHelpers();
-      var request = helpers.setupRoute("/", mustBe, function(handler){
-        return routeHelpers.authorized(handler);
+      var request = helpers.setupRoute("/", mustBe, function(){
+        return routeHelpers.authorized();
       });
 
       request(function(err, res){

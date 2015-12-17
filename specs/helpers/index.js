@@ -14,8 +14,8 @@ var helpers = {
       res.send({});
     };
 
-    var authorizationCheck = cb(handler);
-    router.get(route, authorizationCheck);
+    var authorizationCheck = cb();
+    router.get(route, authorizationCheck, handler);
     app.use("/", router);
 
     return function(route, cb){

@@ -23,12 +23,10 @@ describe("custom failure response", function(){
         res.redirect(301, "http://google.com");
       }
 
-      function authCheck(handler){
+      var request = helpers.setupRoute("/", mustBe, function(){
         var routeHelpers = mustBe.routeHelpers();
-        return routeHelpers.authenticated(handler, failure);
-      }
-
-      var request = helpers.setupRoute("/", mustBe, authCheck);
+        return routeHelpers.authenticated(failure);
+      });
 
       request(function(err, res){
         response = res;
@@ -67,12 +65,10 @@ describe("custom failure response", function(){
         res.redirect(301, "http://google.com");
       }
 
-      function authCheck(handler){
+      var request = helpers.setupRoute("/", mustBe, function(){
         var routeHelpers = mustBe.routeHelpers();
-        return routeHelpers.authorized("do thing", handler, failure);
-      }
-
-      var request = helpers.setupRoute("/", mustBe, authCheck);
+        return routeHelpers.authorized("do thing", failure);
+      });
 
       request(function(err, res){
         response = res;

@@ -19,7 +19,7 @@ function RouteHelpers(config){
   this.config = config;
 }
 
-RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
+RouteHelpers.prototype.authenticated = function(notAuthCB){
   var that = this;
   var config = this.config;
 
@@ -40,9 +40,9 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
         if (err) { return next(err); }
 
         if (isAuth){
-          authCB.apply(undefined, args);
+          return next();
         } else {
-          notAuthCB.apply(undefined, args);
+          return notAuthCB.apply(undefined, args);
         }
       });
 
@@ -52,16 +52,16 @@ RouteHelpers.prototype.authenticated = function(authCB, notAuthCB){
   return handler;
 };
 
-RouteHelpers.prototype.authorizeIdentity = function(identityTypeName, activity, authcb, notauthcb){
+RouteHelpers.prototype.authorizeIdentity = function(identityTypeName, activity, notauthcb){
   var that = this;
-  return this._handleAuthorization(activity, authcb, notauthcb, function(req, config, cb){
+  return this._handleAuthorization(activity, notauthcb, function(req, config, cb){
     var identity = that.getIdentity(identityTypeName, config);
     cb(null, identity);
   });
 };
 
-RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
-  return this._handleAuthorization(activity, authcb, notauthcb, function(req, config, cb){
+RouteHelpers.prototype.authorized = function(activity, notauthcb){
+  return this._handleAuthorization(activity, notauthcb, function(req, config, cb){
     config.routeHelpers.getUser(req, function(err, user){
       if (err) { return cb(err); }
 
@@ -71,17 +71,12 @@ RouteHelpers.prototype.authorized = function(activity, authcb, notauthcb){
   });
 };
 
-RouteHelpers.prototype._handleAuthorization = function(activity, authcb, notauthcb, getIdentitycb){
+RouteHelpers.prototype._handleAuthorization = function(activity, notauthcb, getIdentitycb){
   var that = this;
   var config = this.config;
 
   if (!notauthcb){
     notauthcb = config.routeHelpers.notAuthorized;
-  }
-
-  if (!authcb){
-    authcb = activity;
-    activity = undefined;
   }
 
   return function(req, res, next){
@@ -98,7 +93,7 @@ RouteHelpers.prototype._handleAuthorization = function(activity, authcb, notauth
         if (err) { return next(err); }
 
         if (isAuth) { 
-          return authcb.apply(undefined, handlerArgs);
+          return next();
         } else {
           return notauthcb.apply(undefined, handlerArgs);
         }

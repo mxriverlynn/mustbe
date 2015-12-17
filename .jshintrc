@@ -10,7 +10,6 @@
   "boss": true,
   "eqnull": true,
   "browser": true,
-  "debug": true,
   "globals": {
     "setImmediate": true,
     "console": true,
