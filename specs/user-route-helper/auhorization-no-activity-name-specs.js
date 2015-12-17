@@ -1,15 +1,12 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
 describe("no activity name", function(){
 
   describe("when authorizing with no activity name, and not explicitly allowed or denied", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -44,11 +41,9 @@ describe("no activity name", function(){
   });
 
   describe("when authorizing with no activity name, and explicitly denied", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -86,11 +81,9 @@ describe("no activity name", function(){
   });
 
   describe("when authorizing with no activity name, but explicitly allowed", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){

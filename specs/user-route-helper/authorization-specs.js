@@ -1,15 +1,12 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
 describe("authorization", function(){
 
   describe("when doing authorization check", function(){
-    var async = new AsyncSpec(this);
-
     var response, userIdentity;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -46,11 +43,9 @@ describe("authorization", function(){
   });
 
   describe("when an authorized route has params that are mapped", function(){
-    var async = new AsyncSpec(this);
-
     var params, response, req;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){

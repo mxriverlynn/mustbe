@@ -7,6 +7,9 @@ var RouteHelpers = require("./routeHelpers");
 function MustBe(){
 }
 
+// Methods
+// -------
+
 MustBe.prototype.configure = function(cb){
   var configurator = new Configurator();
   cb(configurator);
@@ -27,5 +30,8 @@ MustBe.prototype.getIdentity = function(identityTypeName){
   }
   return new IdentityType(this.config);
 };
+
+// Exports
+// -------
 
 module.exports = MustBe;

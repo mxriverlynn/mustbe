@@ -1,4 +1,3 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
@@ -13,11 +12,9 @@ describe("custom identity authorization overrides", function(){
   };
 
   describe("when an activity is explicitly denied", function(){
-    var async = new AsyncSpec(this);
-
     var response, user;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -52,11 +49,9 @@ describe("custom identity authorization overrides", function(){
   });
 
   describe("when an activity is explicitly allowed", function(){
-    var async = new AsyncSpec(this);
-
     var response, user;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -87,11 +82,9 @@ describe("custom identity authorization overrides", function(){
   });
 
   describe("when an activity is explicitly denied and allowed", function(){
-    var async = new AsyncSpec(this);
-
     var response, user;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -129,11 +122,9 @@ describe("custom identity authorization overrides", function(){
   });
 
   describe("when an activity is neither explicitly denied nor explicitly allowed, but is authorized", function(){
-    var async = new AsyncSpec(this);
-
     var response, user;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -171,11 +162,9 @@ describe("custom identity authorization overrides", function(){
   });
 
   describe("when an activity is neither explicitly denied nor explicitly allowed, and not authorized", function(){
-    var async = new AsyncSpec(this);
-
     var response, user;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){

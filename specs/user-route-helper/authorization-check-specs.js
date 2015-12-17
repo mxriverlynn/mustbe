@@ -1,15 +1,12 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
 describe("authorization", function(){
 
   describe("when user is authorized", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -44,11 +41,9 @@ describe("authorization", function(){
   });
 
   describe("when user is not authorized", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -84,11 +79,9 @@ describe("authorization", function(){
   });
 
   describe("when there is no authorization check for an activity", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){

@@ -1,4 +1,3 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
@@ -8,10 +7,9 @@ describe("custom identity authorization check", function(){
     var identityType = "my-identity";
 
     describe("and that identity is allowed to do the activity", function(){
-      var async = new AsyncSpec(this);
       var response;
 
-      async.beforeEach(function(done){
+      beforeEach(function(done){
         var mustBe = new MustBe();
 
         mustBe.configure(function(config){
@@ -47,10 +45,9 @@ describe("custom identity authorization check", function(){
     });
 
     describe("and that identity is not allowed to do the activity", function(){
-      var async = new AsyncSpec(this);
       var response;
 
-      async.beforeEach(function(done){
+      beforeEach(function(done){
         var mustBe = new MustBe();
 
         mustBe.configure(function(config){

@@ -1,4 +1,3 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
@@ -7,10 +6,9 @@ describe("invalid identity authorization check", function(){
 
   describe("when requesting authorization for a custom identity that does not exist", function(){
     var nonExistentType = "non-existent";
-    var async = new AsyncSpec(this);
     var mustBe, err, response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       mustBe = new MustBe();
 
       mustBe.configure(function(config){});
@@ -34,11 +32,10 @@ describe("invalid identity authorization check", function(){
   });
 
   describe("when requesting authorization for an activity that does not exist on a custom identity", function(){
-    var async = new AsyncSpec(this);
     var nonExistentActivity = "non-existent";
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){

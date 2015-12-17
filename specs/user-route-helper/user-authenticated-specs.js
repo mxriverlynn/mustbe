@@ -1,14 +1,12 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
 describe("user authenticated", function(){
 
   describe("when user is found", function(){
-    var async = new AsyncSpec(this);
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -39,11 +37,9 @@ describe("user authenticated", function(){
   });
 
   describe("when user is not found", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -74,11 +70,9 @@ describe("user authenticated", function(){
   });
 
   describe("when getting user causes error", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -108,11 +102,9 @@ describe("user authenticated", function(){
   });
 
   describe("when there is not getUser method, and trying to authorize user", function(){
-    var async = new AsyncSpec(this);
-
     var response;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){

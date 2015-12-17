@@ -37,15 +37,14 @@
     "start": "grunt"
   },
   "dependencies": {
-    "rsvp": "^3.0.9"
+    "rsvp": "3.1.0"
   },
   "devDependencies": {
-    "express": "^4.5.1",
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-jasmine-node": "^0.2.1",
-    "jasmine-async": "0.0.1",
-    "supertest": "^0.13.0"
+    "express": "4.13.3",
+    "grunt": "0.4.5",
+    "grunt-contrib-jshint": "0.11.3",
+    "grunt-contrib-watch": "0.6.1",
+    "grunt-jasmine-nodejs": "1.4.3",
+    "supertest": "1.1.0"
   }
 }

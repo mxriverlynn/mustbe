@@ -3,22 +3,6 @@ util.print = process.stdout.write.bind(process.stdout);
 
 module.exports = function(grunt){
   grunt.initConfig({
-    pkg: grunt.file.readJSON("package.json"),
-    meta: {
-      version: "<%= pkg.version %>",
-      banner:
-        "// mustbe\n" + 
-        "// ------\n" + 
-        "// An authorization framework for NodeJS apps" + 
-        "// \n" + 
-        "// v<%= pkg.version %>\n" +
-        "// Copyright (C)<%= grunt.template.today('yyyy') %> Muted Solutions, LLC.\n" + 
-        "// Distributed under MIT license\n" + 
-        "// \n" +
-        "// https://github.com/derickbailey/mustbe\n" +
-        "\n"
-    },
-
     jshint: {
       options: {
         jshintrc: ".jshintrc"
@@ -26,27 +10,22 @@ module.exports = function(grunt){
       build: [ "mustbe/**/*.js" ]
     },
 
-    jasmine_node: {
+    jasmine_nodejs: {
       options: {
-        forceExit: true,
-        match: ".",
-        matchall: false,
-        extensions: "js",
-        specNameMatcher: "[Ss][Pp][Ee][Cc][Ss]",
-        jUnit: {
-          report: false,
-          savePath : "./build/reports/jasmine/",
-          useDotNotation: true,
-          consolidate: true
-        }
+        specNameSuffix: "specs.js"
       },
-      all: ["specs/"]
+      reporters: {
+        console: {
+          colors: true,
+          listStyle: "indent"
+        },
+      },
+      all: {
+        specs: ["specs/**"],
+      }
     },
 
     watch: {
-      options: {
-        //spawn: false
-      },
       specs: {
         files: ["mustbe/**/*.js", "specs/**/*.js"],
         tasks: ["specs"]
@@ -54,10 +33,10 @@ module.exports = function(grunt){
     }
   });
 
-  grunt.loadNpmTasks("grunt-jasmine-node");
+  grunt.loadNpmTasks("grunt-jasmine-nodejs");
   grunt.loadNpmTasks("grunt-contrib-jshint");
   grunt.loadNpmTasks("grunt-contrib-watch");
 
-  grunt.registerTask("specs", ["jshint", "jasmine_node:all"]);
+  grunt.registerTask("specs", ["jshint", "jasmine_nodejs:all"]);
   grunt.registerTask("default", ["specs", "watch"]);
 };

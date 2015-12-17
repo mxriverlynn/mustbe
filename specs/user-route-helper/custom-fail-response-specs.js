@@ -1,15 +1,12 @@
-var AsyncSpec = require("jasmine-async")(jasmine);
 var MustBe = require("../../mustbe/core");
 var helpers = require("../helpers");
 
 describe("custom failure response", function(){
 
   describe("when not authenticated and custom failure method is provided", function(){
-    var async = new AsyncSpec(this);
-
     var response, req, res, next;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
@@ -46,11 +43,9 @@ describe("custom failure response", function(){
   });
 
   describe("when not authorized and custom failure method is provided", function(){
-    var async = new AsyncSpec(this);
-
     var response, req, res, next;
 
-    async.beforeEach(function(done){
+    beforeEach(function(done){
       var mustBe = new MustBe();
 
       mustBe.configure(function(config){
