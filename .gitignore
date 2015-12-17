@@ -6,3 +6,4 @@ node_modules
 *.sw0
 *.orig
 *.log
+demo/npm-debug.log

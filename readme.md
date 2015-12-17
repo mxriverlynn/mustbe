@@ -48,7 +48,14 @@ MustBe can be found in the [documentation folder](docs).
 
 There is a small demo app located in the [/demo](./demo)
 folder of this repository. You can run the demo app by
-going in to that folder and running the following:
+first installing the dependencies for mustbe with:
+
+````
+npm install
+````
+
+And then going in to the demo folder and running the
+following:
 
 ````
 npm install
