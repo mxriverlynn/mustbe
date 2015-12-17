@@ -34,19 +34,8 @@ middlware in the Express App.
 ```js
 var mustBe = require("mustbe").routeHelpers();
 
-app.use("/admin", mustBe.authorized("admin.view", function(req, res, next){
-  // this callback fires if the current user
-  // is authorized for the "admin.view" activity.
-  // since it is middleware, we must call `next` to ensure
-  // the route processing continues
-
-  next();
-});
+app.use("/admin", mustBe.authorized("admin.view"));
 ```
-
-Note that you only have to call `next()` in this middleware
-callback. That will send people on to the actual route handler
-for the request.
 
 ### Require Authenticated Users for `/profile` Routes
 
@@ -58,14 +47,7 @@ the `authenticated` method.
 ```js
 var mustBe = require("mustbe").routeHelpers();
 
-app.use("/profile", mustBe.authenticated(function(req, res, next){
-  // this callback fires if the current user
-  // is authenticated. since it is middleware, 
-  // we must call `next` to ensure
-  // the route processing continues
-
-  next();
-});
+app.use("/profile", mustBe.authenticated();
 ```
 
 You should note that MustBe does not provide support for
@@ -74,3 +56,4 @@ is authenticated is entirely up to you. MustBe does, however,
 allow you to check authentication. This is done through the
 use of [the `isAuthenticated` configuration method](./configure.md).
 
+If you're looking for authentication, check out [iam](http://github.com/derickbailey/iam).

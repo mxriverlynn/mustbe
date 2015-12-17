@@ -1,7 +1,7 @@
 var MustBe = require("../mustbe/core");
 var helpers = require("./helpers");
 
-xdescribe("identity", function(){
+describe("identity", function(){
 
   describe("when getting identity and not providing an identity type to get", function(){
     var id;

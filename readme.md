@@ -63,7 +63,7 @@ npm install
 npm start
 ```
 
-Then go to `http://localhost:3000` and you will see a small
+Now go to `http://localhost:3000` and you will see a small
 demonstration of various MustBe features.
 
 ## Getting Started
@@ -143,7 +143,7 @@ var mustbe = require("mustbe").routeHelpers();
 var express = require("express");
 
 var router = express.Router();
-router.get("/:id", mustBe.authorized("view thing", view));
+router.get("/:id", mustBe.authorized("view thing"), view);
 
 function view(req, res, next){
   res.render("/something");

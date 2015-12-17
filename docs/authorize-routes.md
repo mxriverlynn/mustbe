@@ -21,7 +21,7 @@ var mustbe = require("mustbe").routeHelpers();
 var express = require("express");
 
 var router = express.Router();
-router.get("/profile", mustBe.authenticated(viewProfile));
+router.get("/profile", mustBe.authenticated(), viewProfile);
 
 function viewProfile(req, res, next){
   res.render("/profile/view");
@@ -46,7 +46,7 @@ var mustbe = require("mustbe").routeHelpers();
 var express = require("express");
 
 var router = express.Router();
-router.get("/:id", mustBe.authorized("view thing", view));
+router.get("/:id", mustBe.authorized("view thing"), view);
 
 function view(req, res, next){
   res.render("/something");
@@ -82,7 +82,7 @@ var mustbe = require("mustbe").routeHelpers();
 var express = require("express");
 
 var router = express.Router();
-router.get("/:id", mustBe.authorized("view thing", view, cannotView));
+router.get("/:id", mustBe.authorized("view thing", cannotView), view);
 
 function view(req, res, next){
   res.render("/something");
