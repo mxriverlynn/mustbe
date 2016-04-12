@@ -24,7 +24,7 @@ given activity in your application.
 
 The gist of it is that you check whether or not a user
 has permission to perform an activity. How they get permission
-to do that activity is up to you. Maybe it's throug a role,
+to do that activity is up to you. Maybe it's through a role,
 maybe it's through data they have been assigned to. But the
 permission for the activity is what needs to be checked.
 
