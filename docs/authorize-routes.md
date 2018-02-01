@@ -88,7 +88,7 @@ function view(req, res, next){
   res.render("/something");
 }
 
-funciton cannotView(req, res, next){
+function cannotView(req, res, next){
   res.render("/cannot-view");
 }
 ```
