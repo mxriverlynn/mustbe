@@ -1,7 +1,7 @@
 ## Custom Identities
 
 The default use case for mustBe assumes a user that is logged in. However, it can
-be used with a custome `Identity` type, to check authorization rules against
+be used with a custom `Identity` type, to check authorization rules against
 any identity desired.
 
 Custom Identity must conform to the following protocol:
