@@ -57,7 +57,7 @@ npm install
 And then going in to the demo folder and running the
 following:
 
-````
+```
 npm install
 
 npm start
