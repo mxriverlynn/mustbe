@@ -31,7 +31,7 @@ permission for the activity is what needs to be checked.
 For more detail on this, check out 
 [my 2011 article on using activity based authorization checks](http://lostechies.com/derickbailey/2011/05/24/dont-do-role-based-authorization-checks-do-activity-based-checks/). 
 It will give you the core of what you need to know about
-whey role-based authorization checks are a bad idea, and why
+why role-based authorization checks are a bad idea, and why
 activity based permissions are the way to go. 
 
 ## Documentation
